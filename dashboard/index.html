@@ -29,7 +29,7 @@ body{margin:0;color:var(--ink);font:16px/1.6 var(--sans);background:#0a0708;over
 nav{position:sticky;top:0;z-index:20;display:flex;align-items:center;gap:14px;padding:14px clamp(16px,4vw,48px);
   background:linear-gradient(180deg,rgba(10,7,8,.8),rgba(10,7,8,0));backdrop-filter:blur(8px)}
 .brand{display:flex;align-items:center;gap:12px;text-decoration:none;color:inherit}
-.brand img{width:40px;height:40px;border-radius:50%;object-fit:cover;box-shadow:0 0 0 1px rgba(255,255,255,.15),0 0 24px rgba(226,71,90,.35);animation:beat 2.6s ease-in-out infinite}
+.brand img{width:40px;height:40px;border-radius:11px;object-fit:cover;box-shadow:0 0 24px rgba(226,71,90,.35);animation:beat 2.6s ease-in-out infinite}
 @keyframes beat{0%,100%{transform:scale(1)}10%{transform:scale(1.08)}20%{transform:scale(1)}30%{transform:scale(1.05)}}
 .brand b{font:700 17px/1 Cinzel,serif;letter-spacing:.12em}
 .brand small{display:block;font-size:11px;color:var(--muted);letter-spacing:.04em;margin-top:3px}
@@ -189,7 +189,7 @@ footer b{font:700 14px Cinzel,serif;letter-spacing:.12em;color:var(--ink)}
 <body>
 <div id="bg"></div><div id="veil"></div><div id="progress"></div>
 <nav>
-  <a class="brand" href="#top"><img src="assets/mark.jpg" alt=""><div><b id="bProduct"></b><small id="bBy"></small></div></a>
+  <a class="brand" href="#top"><img src="assets/offers-mark.png" alt="Offers OSS"><div><b id="bProduct"></b><small id="bBy"></small></div></a>
   <div class="chapters" id="chapters"></div>
   <a class="tool" id="xl" href="#" target="_blank" rel="noopener" style="text-decoration:none" title="Open the tracker in Excel">▦ Open in Excel</a>
   <button class="tool" id="load" title="Open your tracker .xlsx or data.json">Open tracker</button>

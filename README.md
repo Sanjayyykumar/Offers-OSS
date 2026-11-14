@@ -13,9 +13,10 @@
 [![Compliant](https://img.shields.io/badge/ToS-human--in--the--loop-fbbf24)](docs/COMPLIANCE.md)
 [![License: MIT](https://img.shields.io/badge/license-MIT-e8ebf2)](LICENSE)
 
-<img src="screenshots/demo.gif" alt="Offers OSS dashboard: scrolling through the story, from today's goal to complete status, with the AI sphere assistant" width="100%">
+<img src="screenshots/00-dashboard-hero.jpg" alt="Offers OSS dashboard: today's goal ring, streak, reply rate, follow-ups and the AI sphere assistant" width="100%">
 
-**[▶ Live demo](https://sanjayyykumar.github.io/Offers-OSS/)** · fictional data, no install
+### [▶ Open the live demo](https://sanjayyykumar.github.io/Offers-OSS/)
+<sub>Fictional data · runs in your browser · no install</sub>
 
 <sub>Real dashboard with demo data. Name blurred with the built-in <b>Blur name</b> button.</sub>
 
