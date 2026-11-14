@@ -1,0 +1,20 @@
+# Instincts = the judgement of a senior job hunter, written as rules.
+# The CLI uses the numeric ones; every AI agent must obey all of them (see AGENTS.md).
+min_fit: 55                    # below this, do not spend tokens or time - unless it is a referral
+daily_application_cap: 15      # quality beats volume; mass-applying lowers response rate
+apply_within_days_of_posting: 5
+follow_up_after_days: 7
+max_follow_ups: 2              # then mark Ghosted and move on
+ghost_after_days: 21
+
+rules:
+  - Never submit anything without the human clicking submit.
+  - Never invent experience, numbers, titles, dates, degrees or certifications. Missing fact -> ask the human.
+  - A referral or recruiter contact beats any job-board application; do those first.
+  - Company career page beats Easy Apply for the same job.
+  - If the JD asks for 2+ years more experience than the candidate has, apply only with a reason noted.
+  - Tailor the top third of the resume only (headline, summary, top bullets). Do not rewrite the whole resume.
+  - Same company, many roles -> apply to the best 1-2, not all.
+  - Log every action in the tracker the same day. If it is not in the tracker, it did not happen.
+  - After every interview, log questions asked with `offeros learn --kind interview`.
+  - Repeated rejection reason (3x) -> fix the profile or resume before applying further.

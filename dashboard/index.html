@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="assets/favicon.png">
+<title>Offers OSS · by Idharyn Labs</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;1,9..144,400&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#f4efe9;--muted:#a79f9a;--faint:#6f6763;--line:rgba(255,236,220,.12);
+  --glass:rgba(20,14,16,.52);--glass2:rgba(255,240,230,.05);
+  --ember:#f2a77a;--rose:#e2475a;--frost:#8fb8ff;--good:#7ee0b1;
+  --serif:"Fraunces",Georgia,serif;--sans:"Inter",system-ui,sans-serif;--mono:"JetBrains Mono",ui-monospace,monospace;
+  --r:20px;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;overflow-x:hidden}
+body{margin:0;color:var(--ink);font:16px/1.6 var(--sans);background:#0a0708;overflow-x:hidden;-webkit-font-smoothing:antialiased}
+#bg{position:fixed;inset:-6%;z-index:-2;background:url(assets/bokeh.jpg) center/cover;will-change:transform;filter:saturate(1.1)}
+#veil{position:fixed;inset:0;z-index:-1;background:
+  radial-gradient(1200px 700px at 50% -10%,rgba(226,71,90,.10),transparent 60%),
+  linear-gradient(180deg,rgba(10,7,8,.15),rgba(10,7,8,.72) 55%,rgba(10,7,8,.92))}
+.orb{position:fixed;border-radius:50%;filter:blur(2px);z-index:-1;opacity:.45;animation:float 18s ease-in-out infinite;pointer-events:none}
+@keyframes float{50%{transform:translate(30px,-40px) scale(1.15)}}
+
+/* ---------- top bar */
+nav{position:sticky;top:0;z-index:20;display:flex;align-items:center;gap:14px;padding:14px clamp(16px,4vw,48px);
+  background:linear-gradient(180deg,rgba(10,7,8,.8),rgba(10,7,8,0));backdrop-filter:blur(8px)}
+.brand{display:flex;align-items:center;gap:12px;text-decoration:none;color:inherit}
+.brand img{width:40px;height:40px;border-radius:50%;object-fit:cover;box-shadow:0 0 0 1px rgba(255,255,255,.15),0 0 24px rgba(226,71,90,.35);animation:beat 2.6s ease-in-out infinite}
+@keyframes beat{0%,100%{transform:scale(1)}10%{transform:scale(1.08)}20%{transform:scale(1)}30%{transform:scale(1.05)}}
+.brand b{font:700 17px/1 Cinzel,serif;letter-spacing:.12em}
+.brand small{display:block;font-size:11px;color:var(--muted);letter-spacing:.04em;margin-top:3px}
+.chapters{display:flex;gap:4px;margin-left:auto;flex-wrap:wrap}
+.chapters a{color:var(--muted);text-decoration:none;font-size:13px;padding:6px 11px;border-radius:999px;transition:.25s}
+.chapters a.on,.chapters a:hover{color:var(--ink);background:var(--glass2)}
+.tool{background:var(--glass2);border:1px solid var(--line);color:var(--ink);border-radius:999px;padding:7px 13px;font:500 13px var(--sans);cursor:pointer;transition:.25s}
+.tool:hover{border-color:var(--ember);box-shadow:0 0 20px rgba(242,167,122,.25)}
+#progress{position:fixed;top:0;left:0;height:2px;width:0;z-index:30;background:linear-gradient(90deg,var(--frost),var(--ember),var(--rose))}
+
+/* ---------- layout */
+main{max-width:1180px;margin:0 auto;padding:0 clamp(16px,4vw,40px) 80px}
+section{padding:clamp(70px,12vh,130px) 0 0;scroll-margin-top:60px}
+.eyebrow{font:500 12px var(--mono);letter-spacing:.22em;text-transform:uppercase;color:var(--ember)}
+h1,h2{font-family:var(--serif);font-weight:400;letter-spacing:-.02em;margin:.25em 0 .35em}
+h1{font-size:clamp(40px,7vw,88px);line-height:1.02}
+h2{font-size:clamp(30px,4.4vw,52px);line-height:1.08}
+h1 em,h2 em{font-style:italic;background:linear-gradient(90deg,var(--frost),var(--ember) 55%,var(--rose));-webkit-background-clip:text;background-clip:text;color:transparent}
+.lede{font-size:clamp(17px,1.6vw,20px);color:var(--muted);max-width:640px;margin:0}
+.lede b{color:var(--ink);font-weight:600}
+
+.glass{background:var(--glass);border:1px solid var(--line);border-radius:var(--r);backdrop-filter:blur(18px) saturate(130%);-webkit-backdrop-filter:blur(18px) saturate(130%);
+  box-shadow:0 20px 60px rgba(0,0,0,.35),inset 0 1px 0 rgba(255,255,255,.06);position:relative;transition:transform .35s cubic-bezier(.2,.8,.2,1),border-color .35s}
+.glass:hover{transform:translateY(-4px);border-color:rgba(242,167,122,.35)}
+.grid{display:grid;gap:18px;margin-top:34px}
+.g2{grid-template-columns:1.2fr 1fr}.g3{grid-template-columns:repeat(3,minmax(0,1fr))}.g4{grid-template-columns:repeat(4,minmax(0,1fr))}
+.pad{padding:24px 26px}
+
+/* reveal on scroll */
+.rv{opacity:0;transform:translateY(34px);transition:opacity .9s cubic-bezier(.2,.8,.2,1),transform .9s cubic-bezier(.2,.8,.2,1)}
+.rv.in{opacity:1;transform:none}
+.rv.d1{transition-delay:.08s}.rv.d2{transition-delay:.16s}.rv.d3{transition-delay:.24s}.rv.d4{transition-delay:.32s}
+
+/* ---------- hero */
+.hero{min-height:calc(100vh - 70px);display:flex;flex-direction:column;justify-content:center;padding-top:20px}
+.hero-row{display:grid;grid-template-columns:auto 1fr;gap:clamp(24px,5vw,60px);align-items:center;margin-top:38px}
+.ring{--p:0;width:clamp(170px,22vw,230px);aspect-ratio:1;border-radius:50%;display:grid;place-items:center;position:relative;
+  background:conic-gradient(from 210deg,var(--frost),var(--ember) calc(var(--p)*.6%),var(--rose) calc(var(--p)*1%),rgba(255,255,255,.07) 0);
+  box-shadow:0 0 60px rgba(226,71,90,.25);transition:--p 1.4s}
+.ring::after{content:"";position:absolute;inset:12px;border-radius:50%;background:radial-gradient(circle at 50% 30%,#2a1c1e,#120c0d)}
+.ring div{position:relative;z-index:1;text-align:center}
+.ring b{display:block;font:400 clamp(46px,6vw,64px)/1 var(--serif)}
+.ring span{font-size:13px;color:var(--muted)}
+.stats{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+.stat{padding:18px 20px}
+.stat b{display:block;font:400 clamp(28px,3.4vw,40px)/1.05 var(--serif)}
+.stat>span{color:var(--muted);font-size:13px}
+.scrollcue{margin-top:46px;color:var(--faint);font-size:13px;display:flex;align-items:center;gap:10px}
+.scrollcue i{width:22px;height:34px;border:1px solid var(--faint);border-radius:12px;position:relative}
+.scrollcue i::after{content:"";position:absolute;left:50%;top:7px;width:3px;height:7px;border-radius:2px;background:var(--ember);transform:translateX(-50%);animation:cue 1.8s infinite}
+@keyframes cue{60%{transform:translate(-50%,10px);opacity:0}}
+
+/* ---------- actions */
+.act{display:flex;gap:16px;align-items:flex-start;padding:20px 22px}
+.act .n{flex:none;width:38px;height:38px;border-radius:50%;display:grid;place-items:center;font:600 15px var(--serif);background:linear-gradient(135deg,var(--ember),var(--rose));color:#1a0f10}
+.act h4{margin:0 0 4px;font:600 16px var(--sans)}
+.act p{margin:0 0 10px;color:var(--muted);font-size:14px}
+code.cmd{display:inline-flex;align-items:center;gap:10px;font:13px var(--mono);background:rgba(0,0,0,.35);border:1px solid var(--line);border-radius:10px;padding:7px 10px;max-width:100%;overflow-wrap:anywhere}
+code.cmd button{flex:none;background:none;border:0;color:var(--ember);cursor:pointer;font:600 12px var(--sans)}
+
+/* ---------- funnel */
+.funnel{display:flex;flex-direction:column;gap:12px}
+.fs{display:grid;grid-template-columns:minmax(90px,140px) 1fr 70px;gap:14px;align-items:center}
+.fs .lab{font-size:14px;color:var(--muted)}
+.track{height:34px;border-radius:12px;background:rgba(255,255,255,.05);overflow:hidden}
+.track b{display:block;height:100%;width:0;border-radius:12px;background:linear-gradient(90deg,var(--frost),var(--ember),var(--rose));transition:width 1.4s cubic-bezier(.2,.8,.2,1)}
+.fs .v{text-align:right;font:400 22px var(--serif)}
+.fs .v small{display:block;font:12px var(--sans);color:var(--faint)}
+.insight{margin-top:22px;padding:16px 18px;border-left:2px solid var(--ember);background:rgba(242,167,122,.06);border-radius:0 12px 12px 0;color:var(--ink);font-size:15px}
+
+/* ---------- sources & fit */
+.src{display:flex;flex-direction:column;gap:14px}
+.sr .top{display:flex;justify-content:space-between;font-size:14px}
+.sr .top span{color:var(--muted)}
+.sr .track{height:8px;margin-top:6px;position:relative}
+.sr .track b.r{position:absolute;inset:0 auto 0 0;background:var(--good)}
+.hist{display:flex;gap:10px;align-items:flex-end;height:200px}
+.hist div{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;gap:8px;height:100%;font-size:12px;color:var(--muted)}
+.hist i{display:block;width:100%;height:0;border-radius:10px 10px 4px 4px;background:linear-gradient(180deg,var(--ember),var(--rose));transition:height 1.2s cubic-bezier(.2,.8,.2,1)}
+.hist b{font:400 18px var(--serif);color:var(--ink)}
+
+/* ---------- pipeline */
+.lanes{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:14px;margin-top:34px}
+.lane{padding:14px}
+.lane h5{margin:2px 4px 12px;display:flex;justify-content:space-between;font:600 12px var(--sans);letter-spacing:.1em;text-transform:uppercase}
+.job{padding:11px 12px;border-radius:12px;background:var(--glass2);border:1px solid var(--line);margin-bottom:8px;transition:.25s}
+.job:hover{border-color:rgba(242,167,122,.4);transform:translateX(3px)}
+.job b{display:block;font-size:14px}.job small{color:var(--muted);font-size:12px}
+.chip{display:inline-block;font:600 11px var(--sans);padding:2px 8px;border-radius:999px;white-space:nowrap}
+
+/* ---------- follow-ups */
+.fu{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:14px;margin-top:34px}
+.fu .glass{padding:18px 20px}
+.fu .when{font:12px var(--mono);color:var(--ember)}.fu .late{color:var(--rose)}
+.fu b{display:block;font-size:16px;margin-top:6px}.fu small{color:var(--muted)}
+
+/* ---------- all jobs: cards, never a horizontal scroll */
+.filters{display:flex;flex-wrap:wrap;gap:10px;margin-top:30px}
+.filters input,.filters select{background:var(--glass);border:1px solid var(--line);color:var(--ink);border-radius:999px;padding:10px 16px;font:14px var(--sans);backdrop-filter:blur(10px)}
+.filters input{flex:1 1 240px;min-width:0}
+.pills{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
+.pill{cursor:pointer;border:1px solid var(--line);background:var(--glass2);color:var(--muted);border-radius:999px;padding:6px 12px;font:500 13px var(--sans);transition:.2s}
+.pill.on{color:#1a0f10;background:var(--ember);border-color:var(--ember)}
+.list{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px;margin-top:20px}
+.jc{padding:18px 20px;display:flex;flex-direction:column;gap:8px;min-width:0}
+.jc .h{display:flex;justify-content:space-between;gap:10px;align-items:flex-start}
+.jc .co{font:600 17px var(--sans);overflow-wrap:anywhere}
+.jc .co a{color:inherit;text-decoration:none;border-bottom:1px dashed var(--faint)}
+.jc .role{color:var(--muted);font-size:14px;overflow-wrap:anywhere}
+.meta{display:flex;flex-wrap:wrap;gap:6px 14px;font-size:12px;color:var(--faint)}
+.meta span b{color:var(--muted);font-weight:500}
+.fitbar{height:5px;border-radius:9px;background:rgba(255,255,255,.07);overflow:hidden}
+.fitbar i{display:block;height:100%;border-radius:9px}
+.gaps{font-size:12px;color:var(--muted);overflow-wrap:anywhere}
+.more{display:block;margin:22px auto 0}
+.empty{text-align:center;color:var(--muted);padding:50px 20px}
+
+footer{max-width:1180px;margin:100px auto 0;padding:40px clamp(16px,4vw,40px) 60px;border-top:1px solid var(--line);display:flex;gap:18px;align-items:center;flex-wrap:wrap;color:var(--faint);font-size:13px}
+footer img{width:64px;border-radius:14px}
+footer b{font:700 14px Cinzel,serif;letter-spacing:.12em;color:var(--ink)}
+.drop{position:fixed;inset:0;z-index:50;display:none;place-items:center;background:rgba(10,7,8,.85);font:400 28px var(--serif);border:2px dashed var(--ember)}
+.drop.on{display:grid}
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(80px);background:var(--ember);color:#1a0f10;padding:10px 18px;border-radius:999px;font-weight:600;transition:.35s;z-index:60}
+.toast.on{transform:translateX(-50%)}
+.xlrow{color:#7ee0b1!important;text-decoration:none;border-bottom:1px dashed rgba(126,224,177,.5)}
+.blur .pii{filter:blur(7px)}
+@media(max-width:900px){.g2,.g3{grid-template-columns:1fr}.g4{grid-template-columns:repeat(2,minmax(0,1fr))}.hero-row{grid-template-columns:1fr;justify-items:start}.chapters{display:none}}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}.rv{opacity:1;transform:none}}
+
+/* status board */
+.health{display:grid;grid-template-columns:auto 1fr;gap:28px;align-items:center;padding:26px}
+.score{width:130px;aspect-ratio:1;border-radius:50%;display:grid;place-items:center;background:conic-gradient(var(--good) calc(var(--s)*1%),rgba(255,255,255,.07) 0);position:relative}
+.score::after{content:"";position:absolute;inset:10px;border-radius:50%;background:#140d0e}
+.score div{position:relative;z-index:1;text-align:center}.score b{font:400 40px/1 var(--serif);display:block}.score span{font-size:11px;color:var(--muted)}
+.checks{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px}
+.check{display:flex;gap:10px;align-items:flex-start;font-size:14px}.check i{font-style:normal;flex:none;width:22px;height:22px;border-radius:50%;display:grid;place-items:center;font-size:12px;font-weight:700}
+.check.ok i{background:rgba(126,224,177,.15);color:var(--good)}.check.no i{background:rgba(226,71,90,.15);color:var(--rose)}
+.sboard{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:14px;margin-top:18px}
+.sc{padding:18px;cursor:pointer}
+.sc .t{display:flex;justify-content:space-between;align-items:baseline}.sc .t b{font:400 34px/1 var(--serif)}
+.sc .bar{height:6px;border-radius:9px;background:rgba(255,255,255,.07);margin:12px 0 10px;overflow:hidden}.sc .bar i{display:block;height:100%;width:0;transition:width 1.2s}
+.sc small{display:block;color:var(--muted);font-size:12px;overflow-wrap:anywhere}
+/* AI sphere assistant */
+#ai{position:fixed;right:22px;bottom:22px;z-index:40;display:flex;align-items:flex-end;gap:12px;pointer-events:none}
+#ai .bubble{pointer-events:auto;max-width:300px;padding:14px 16px;border-radius:18px 18px 4px 18px;background:rgba(24,14,38,.78);border:1px solid rgba(168,120,255,.35);backdrop-filter:blur(14px);box-shadow:0 10px 40px rgba(120,60,255,.25);font-size:14px;transition:opacity .4s,transform .4s}
+#ai .bubble.hide{opacity:0;transform:translateY(8px);pointer-events:none}
+#ai .bubble .k{font:500 11px var(--mono);letter-spacing:.16em;color:#c4a8ff;text-transform:uppercase}
+#ai .bubble p{margin:6px 0 10px}
+#ai .bubble .row{display:flex;gap:8px;align-items:center}
+#ai .bubble button{font:600 12px var(--sans);border-radius:999px;padding:6px 12px;cursor:pointer;border:1px solid rgba(168,120,255,.5);background:rgba(168,120,255,.18);color:#efe6ff}
+#ai .bubble .dots{margin-left:auto;color:#8d7bb0;font-size:12px}
+#sphere{pointer-events:auto;width:96px;height:96px;cursor:pointer;filter:drop-shadow(0 0 22px rgba(160,90,255,.65));transition:transform .3s}
+#sphere:hover{transform:scale(1.08)}
+@media(max-width:600px){#ai .bubble{max-width:220px}#sphere{width:72px;height:72px}}
+</style>
+</head>
+<body>
+<div id="bg"></div><div id="veil"></div><div id="progress"></div>
+<nav>
+  <a class="brand" href="#top"><img src="assets/mark.jpg" alt=""><div><b id="bProduct"></b><small id="bBy"></small></div></a>
+  <div class="chapters" id="chapters"></div>
+  <a class="tool" id="xl" href="#" target="_blank" rel="noopener" style="text-decoration:none" title="Open the tracker in Excel">▦ Open in Excel</a>
+  <button class="tool" id="load" title="Open your tracker .xlsx or data.json">Open tracker</button>
+  <button class="tool" id="priv" title="Blur your name for screenshots">Blur name</button>
+  <input type="file" id="file" accept=".xlsx,.json" hidden>
+</nav>
+
+<main id="top">
+  <!-- 1 · hero -->
+  <section class="hero" id="today" data-title="Today">
+    <div class="eyebrow rv" id="dateLine"></div>
+    <h1 class="rv d1" id="greet"></h1>
+    <p class="lede rv d2" id="heroLede"></p>
+    <div class="hero-row">
+      <div class="ring rv d2" id="ring"><div><b data-count id="ringNum">0</b><span id="ringLab"></span></div></div>
+      <div class="stats" id="heroStats"></div>
+    </div>
+    <div class="scrollcue rv d4"><i></i>Scroll for your story</div>
+  </section>
+
+  <!-- 2 · next moves -->
+  <section id="next" data-title="Next moves">
+    <div class="eyebrow rv">Chapter 1 · Next moves</div>
+    <h2 class="rv d1">Do these, <em>in this order.</em></h2>
+    <p class="lede rv d2">Picked from your tracker: overdue follow-ups first, then your best-fit open role, then the setup that saves the most time.</p>
+    <div class="grid" id="actions"></div>
+  </section>
+
+  <!-- 3 · funnel -->
+  <section id="journey" data-title="Journey">
+    <div class="eyebrow rv">Chapter 2 · The journey</div>
+    <h2 class="rv d1">From <em>applied</em> to <em>offer.</em></h2>
+    <p class="lede rv d2" id="funnelLede"></p>
+    <div class="glass pad rv d2" style="margin-top:34px"><div class="funnel" id="funnel"></div><div class="insight" id="funnelInsight"></div></div>
+  </section>
+
+  <!-- 4 · what works -->
+  <section id="works" data-title="What works">
+    <div class="eyebrow rv">Chapter 3 · What works</div>
+    <h2 class="rv d1">Where your <em>replies</em> come from.</h2>
+    <p class="lede rv d2" id="worksLede"></p>
+    <div class="grid g2">
+      <div class="glass pad rv d1"><h4 style="margin:0 0 16px;font-weight:600">Replies by source</h4><div class="src" id="sources"></div></div>
+      <div class="glass pad rv d2"><h4 style="margin:0 0 16px;font-weight:600">How well you fit the roles you track</h4><div class="hist" id="hist"></div></div>
+    </div>
+  </section>
+
+  <!-- 5 · pipeline -->
+  <section id="pipeline" data-title="Pipeline">
+    <div class="eyebrow rv">Chapter 4 · In motion</div>
+    <h2 class="rv d1">Every open conversation, <em>at a glance.</em></h2>
+    <p class="lede rv d2" id="pipeLede"></p>
+    <div class="lanes" id="lanes"></div>
+  </section>
+
+  <!-- 6 · follow-ups -->
+  <section id="followups" data-title="Follow-ups">
+    <div class="eyebrow rv">Chapter 5 · Don't go quiet</div>
+    <h2 class="rv d1">Follow-ups <em>win offers.</em></h2>
+    <p class="lede rv d2" id="fuLede"></p>
+    <div class="fu" id="fu"></div>
+  </section>
+
+  <!-- 7 · savings -->
+  <section id="saved" data-title="Saved">
+    <div class="eyebrow rv">Chapter 6 · What the system did for you</div>
+    <h2 class="rv d1">Less typing. <em>More offers.</em></h2>
+    <p class="lede rv d2">Counted locally by the CLI. Your data never leaves your computer.</p>
+    <div class="grid g4" id="savings"></div>
+  </section>
+
+  <!-- status -->
+  <section id="status" data-title="Status">
+    <div class="eyebrow rv">Chapter 7 · Complete status</div>
+    <h2 class="rv d1">Where <em>everything</em> stands.</h2>
+    <p class="lede rv d2" id="statusLede"></p>
+    <div class="glass health rv d2" style="margin-top:30px"><div class="score" id="score"><div><b data-count id="scoreN">0</b><span>search health</span></div></div><div class="checks" id="checks"></div></div>
+    <div class="sboard" id="sboard"></div>
+  </section>
+
+  <!-- 8 · all -->
+  <section id="all" data-title="All roles">
+    <div class="eyebrow rv">Chapter 8 · The full record</div>
+    <h2 class="rv d1">Every role you've <em>touched.</em></h2>
+    <div class="filters rv d2">
+      <input id="q" placeholder="Search company, role, skill, note…" aria-label="Search">
+      <select id="sort" aria-label="Sort"><option value="fit">Best fit first</option><option value="recent">Most recent</option><option value="follow">Follow-up date</option><option value="company">Company A–Z</option></select>
+    </div>
+    <div class="pills" id="pills"></div>
+    <div class="list" id="list"></div>
+    <button class="tool more" id="more" hidden>Show more</button>
+  </section>
+</main>
+
+<footer>
+  <img src="assets/idharyn-logo.jpg" alt="Idharyn Labs">
+  <div><b id="fProduct"></b> · by <span id="fBy"></span><br><span id="fTag"></span></div>
+  <div style="margin-left:auto" id="fGen"></div>
+</footer>
+<div class="drop" id="drop">Drop your tracker (.xlsx) or data.json</div>
+<div class="toast" id="toast"></div>
+<div id="ai" aria-live="polite">
+  <div class="bubble" id="bubble"><div class="k">Your assistant</div><p id="tip"></p><div class="row"><button id="go">Take me there</button><button id="nexttip" style="background:none">Next tip</button><span class="dots" id="dots"></span></div></div>
+  <svg id="sphere" viewBox="-110 -110 220 220" role="button" aria-label="Assistant: show tips" tabindex="0">
+    <defs>
+      <radialGradient id="core"><stop offset="0" stop-color="#fff"/><stop offset=".18" stop-color="#e7c9ff"/><stop offset=".55" stop-color="#8a3dff" stop-opacity=".55"/><stop offset="1" stop-color="#2a0b5c" stop-opacity="0"/></radialGradient>
+      <radialGradient id="shell" cx="40%" cy="35%"><stop offset="0" stop-color="#7b3cff" stop-opacity=".25"/><stop offset=".8" stop-color="#3a1580" stop-opacity=".18"/><stop offset="1" stop-color="#b98cff" stop-opacity=".55"/></radialGradient>
+      <filter id="sg"><feGaussianBlur stdDeviation="1.6" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+    </defs>
+    <circle r="100" fill="url(#shell)"/>
+    <circle id="corec" r="70" fill="url(#core)"/>
+    <g id="mesh" filter="url(#sg)"></g>
+  </svg>
+</div>
+
+<script src="data.js" onerror="void 0"></script>
+<script>
+/* Only the branding is fixed. Everything else is read from the data. */
+const BRAND={product:"Offers OSS",by:"Idharyn Labs",tagline:"Guarded by Frost. Driven by Heart."};
+const $=id=>document.getElementById(id);
+const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const day=v=>v?String(v).slice(0,10):"";
+const todayISO=()=>{const d=new Date();return new Date(d-d.getTimezoneOffset()*6e4).toISOString().slice(0,10)};
+const daysBetween=(a,b)=>Math.round((new Date(b)-new Date(a))/864e5);
+const pct=(a,b)=>b?Math.round(100*a/b):0;
+const qs=new URLSearchParams(location.search);
+const STATIC=!!qs.get("static");
+let DATA=window.OFFEROS_DATA||{jobs:[]};
+
+function prefs(){try{return JSON.parse(localStorage.getItem("offers-oss")||"{}")}catch(e){return{}}}
+function save(p){try{localStorage.setItem("offers-oss",JSON.stringify({...prefs(),...p}))}catch(e){}}
+if(qs.get("blur")==="1"||prefs().blur)document.body.classList.add("blur");
+
+/* ---------- status model: from data, else derived */
+function model(){
+  const J=DATA.jobs||[];
+  const seen=[...new Set(J.map(j=>j.Status).filter(Boolean))];
+  const statuses=DATA.statuses?.length?DATA.statuses:seen;
+  const replied=new Set(DATA.replied||[]), inter=new Set(DATA.interviewing||[]), won=new Set(DATA.won||[]);
+  const active=DATA.active?.length?DATA.active:statuses.filter(s=>!/reject|withdraw|ghost|accept/i.test(s));
+  const color={};statuses.forEach((s,i)=>{const h=(205+i*360/statuses.length*0.9)%360;color[s]=`hsl(${h} 75% 70%)`});
+  return {statuses,active,replied,inter,won,color};
+}
+function chip(s,M){const c=M.color[s]||"#ccc";return `<span class="chip" style="background:${c.replace("hsl(","hsla(").replace(")"," / .16)")};color:${c}">${esc(s)}</span>`}
+function fitColor(f){const h=Math.max(0,Math.min(1,(f||0)/100))*130+0;return `hsl(${h} 70% 62%)`}
+
+/* ---------- numbers count up when they scroll into view */
+function count(el){const end=+el.dataset.to||0,suf=el.dataset.suf||"",fmt=v=>Math.round(v).toLocaleString()+suf;
+  if(STATIC){el.textContent=fmt(end);return}const t0=performance.now(),d=1300;
+  const f=t=>{const k=Math.min(1,(t-t0)/d),e=1-Math.pow(1-k,4);el.textContent=fmt(end*e);k<1&&requestAnimationFrame(f)};requestAnimationFrame(f)}
+const N=(v,suf="")=>`<span data-count data-to="${+v||0}" data-suf="${suf}">0${suf}</span>`;
+
+function render(){
+  const M=model(), J=DATA.jobs||[], T=todayISO();
+  const sent=J.filter(j=>j["Applied On"]);
+  const replied=sent.filter(j=>M.replied.has(j.Status)), inter=sent.filter(j=>M.inter.has(j.Status)), won=J.filter(j=>M.won.has(j.Status));
+  const appliedToday=DATA.applied_today??J.filter(j=>day(j["Applied On"])===T).length;
+  const goal=DATA.daily_goal||Math.max(1,Math.ceil(J.length/10));
+  const due=J.filter(j=>j["Follow-up"]&&day(j["Follow-up"])<=T&&M.active.includes(j.Status));
+  const open=J.filter(j=>M.active.includes(j.Status));
+  const owner=DATA.owner||"there", first=owner.split(/\s+/)[0];
+  const B=DATA.brand||BRAND;
+
+  /* Excel link: ms-excel: opens Excel desktop; the plain file link works everywhere else */
+  const TR=DATA.tracker||{};
+  const xlHref=TR.uri?`ms-excel:ofe|u|${TR.uri}`:"";
+  $("xl").style.display=TR.uri||TR.name?"":"none";
+  $("xl").href=xlHref||"#";$("xl").title=TR.path?`Open ${TR.path} in Excel (or run: python offeros.py open)`:`${TR.name||"Tracker"} - run: python offeros.py open`;
+  $("xl").onclick=e=>{if(!xlHref){e.preventDefault();copy("python offeros.py open")}};
+  /* brand */
+  $("bProduct").textContent=B.product.toUpperCase();$("bBy").textContent="by "+B.by;
+  $("fProduct").textContent=B.product.toUpperCase();$("fBy").textContent=B.by;$("fTag").textContent=B.tagline;
+  $("fGen").textContent=DATA.generated?"Data from "+DATA.generated.replace("T"," "):"No data loaded";
+
+  /* hero */
+  const h=new Date().getHours();
+  $("dateLine").textContent=new Date().toLocaleDateString(undefined,{weekday:"long",day:"numeric",month:"long"});
+  $("greet").innerHTML=`Good ${h<12?"morning":h<17?"afternoon":"evening"}, <em class="pii">${esc(first)}</em>.`;
+  $("heroLede").innerHTML=J.length
+    ?`You're tracking <b>${J.length}</b> roles, <b>${open.length}</b> still open. ${appliedToday>=goal?"Today's goal is done. Spend the rest on follow-ups and prep.":`<b>${goal-appliedToday}</b> more application${goal-appliedToday==1?"":"s"} to hit today's goal.`}`
+    :`No roles yet. Run <code>python offeros.py import jobs/inbox.csv</code>, then <code>export</code>, or open your tracker above.`;
+  const ring=$("ring");ring.style.setProperty("--p",Math.min(100,pct(appliedToday,goal)));
+  $("ringNum").dataset.to=appliedToday;$("ringLab").textContent=`of ${goal} applied today`;
+  const streak=DATA.streak||0;
+  $("heroStats").innerHTML=[
+    [N(streak),`day streak${streak?" 🔥":""}`],[N(pct(replied.length,sent.length),"%"),`reply rate · ${replied.length} of ${sent.length}`],
+    [N(inter.length),`in interviews or beyond`],[N(due.length),`follow-up${due.length==1?"":"s"} due`]
+  ].map((s,i)=>`<div class="glass stat rv d${i+1}"><b>${s[0]}</b><span>${s[1]}</span></div>`).join("");
+
+  /* next moves: from export, else derived */
+  let acts=DATA.next?.length?DATA.next:[];
+  if(!acts.length){
+    if(due.length)acts.push({label:`Send ${due.length} follow-up(s)`,cmd:"python offeros.py due"});
+    const best=J.filter(j=>j.Status===M.statuses[0]).sort((a,b)=>(b["Fit %"]||0)-(a["Fit %"]||0))[0];
+    if(best)acts.push({label:`Apply: ${best.Company} - ${best.Role} (${best["Fit %"]}%)`,cmd:`python offeros.py packet ${best.ID}`});
+  }
+  const why=a=>/follow/i.test(a.label)?"Follow-ups convert better than new applications. Draft each one in seconds."
+    :/apply/i.test(a.label)?"Your highest-fit open role. The packet gives any AI just what it needs."
+    :/answer/i.test(a.label)?"Fill these once, and every application form after that goes faster."
+    :/import/i.test(a.label)?"New jobs are waiting in your inbox file. They'll be scored for free.":"";
+  $("actions").className="grid "+(acts.length>2?"g3":"g2");
+  $("actions").innerHTML=acts.length?acts.map((a,i)=>`<div class="glass act rv d${i+1}"><div class="n">${i+1}</div><div style="min-width:0"><h4>${esc(a.label)}</h4><p>${why(a)}</p><code class="cmd">${esc(a.cmd)}<button data-c="${esc(a.cmd)}">Copy</button></code></div></div>`).join("")
+    :`<div class="glass pad rv">You're all caught up. Add new roles to <code>jobs/inbox.csv</code>.</div>`;
+
+  /* funnel */
+  const after=i=>sent.filter(j=>M.statuses.indexOf(j.Status)>=i);
+  const steps=[["Applied",sent.length]];
+  M.statuses.slice(M.statuses.indexOf("Applied")+1).filter(s=>M.active.includes(s)||M.won.has(s)).forEach(s=>{
+    steps.push([s+(M.won.has(s)?"":"+"),after(M.statuses.indexOf(s)).filter(j=>M.active.includes(j.Status)||M.won.has(j.Status)).length])});
+  const top=steps[0][1]||1;
+  $("funnel").innerHTML=steps.map(s=>`<div class="fs"><span class="lab">${esc(s[0])}</span><div class="track"><b data-w="${Math.max(s[1]?3:0,100*s[1]/top)}"></b></div><span class="v">${N(s[1])}<small>${pct(s[1],top)}%</small></span></div>`).join("");
+  let drop=null;for(let i=1;i<steps.length;i++){if(M.won.has(steps[i-1][0]))break;}for(let i=1;i<steps.length&&!M.won.has(steps[i-1][0]);i++){const loss=steps[i-1][1]-steps[i][1];if(steps[i-1][1]&&(!drop||loss/steps[i-1][1]>drop.r))drop={from:steps[i-1][0],to:steps[i][0],r:loss/steps[i-1][1]}}
+  $("funnelLede").innerHTML=sent.length?`Of <b>${sent.length}</b> applications, <b>${replied.length}</b> got a reply and <b>${inter.length}</b> reached interviews.`:"Your funnel fills as soon as you mark a job Applied.";
+  $("funnelInsight").innerHTML=drop&&drop.r>0?`Biggest drop: <b>${esc(drop.from)} → ${esc(drop.to.replace("+",""))}</b> (${Math.round(drop.r*100)}% lost). ${/applied/i.test(drop.from)?"Tailor the top third of your resume and choose higher-fit roles.":"Prepare with <code>offeros packet &lt;ID&gt; --task interview-prep</code>."}`:"Not enough data for a pattern yet.";
+
+  /* sources */
+  const src={};sent.forEach(j=>{const s=j.Source||"Other";(src[s]=src[s]||{n:0,r:0}).n++;if(M.replied.has(j.Status))src[s].r++});
+  const se=Object.entries(src).sort((a,b)=>b[1].r/b[1].n-a[1].r/a[1].n||b[1].n-a[1].n),mx=Math.max(1,...se.map(x=>x[1].n));
+  const bestSrc=se.find(x=>x[1].n>=2)||se[0];
+  $("worksLede").innerHTML=bestSrc?`<b>${esc(bestSrc[0])}</b> gives you the best reply rate (${pct(bestSrc[1].r,bestSrc[1].n)}%). Put more of your time there.`:"Sources appear once you apply.";
+  $("sources").innerHTML=se.length?se.map(([s,v])=>`<div class="sr"><div class="top"><b>${esc(s)}</b><span>${v.r} of ${v.n} replied · ${pct(v.r,v.n)}%</span></div><div class="track"><b data-w="${100*v.n/mx}"></b><b class="r" data-w="${100*v.r/mx}"></b></div></div>`).join(""):'<div class="empty">No applications yet</div>';
+  const fits=J.map(j=>+j["Fit %"]).filter(n=>!isNaN(n)), bins=[0,0,0,0,0];fits.forEach(f=>bins[Math.min(4,Math.floor(f/20))]++);const bm=Math.max(1,...bins);
+  $("hist").innerHTML=bins.map((n,i)=>`<div><b>${n}</b><i data-h="${Math.max(n?4:1,100*n/bm)}" style="background:linear-gradient(180deg,${fitColor(i*20+10)},var(--rose))"></i>${i*20}–${i==4?100:i*20+19}%</div>`).join("");
+
+  /* pipeline lanes: active statuses from the model */
+  $("pipeLede").innerHTML=`<b>${open.length}</b> roles are moving. Highest fit at the top of each column.`;
+  $("lanes").innerHTML=M.active.map((s,i)=>{const L=J.filter(j=>j.Status===s).sort((a,b)=>(b["Fit %"]||0)-(a["Fit %"]||0));
+    return `<div class="glass lane rv d${i%4+1}"><h5><span style="color:${M.color[s]}">${esc(s)}</span><span>${L.length}</span></h5>${L.slice(0,5).map(j=>`<div class="job"><b>${esc(j.Company)}</b><small>${esc(j.Role)}</small><div class="fitbar" style="margin-top:7px"><i style="width:${j["Fit %"]||0}%;background:${fitColor(j["Fit %"])}"></i></div></div>`).join("")}${L.length>5?`<small style="color:var(--muted);padding:0 4px">+${L.length-5} more</small>`:""}${!L.length?'<small style="color:var(--faint);padding:0 4px">Empty</small>':""}</div>`}).join("");
+
+  /* follow-ups */
+  const upcoming=J.filter(j=>j["Follow-up"]&&M.active.includes(j.Status)).sort((a,b)=>day(a["Follow-up"]).localeCompare(day(b["Follow-up"])));
+  $("fuLede").innerHTML=due.length?`<b>${due.length}</b> due now. A short, specific nudge often gets a reply where silence never does.`:upcoming.length?"Nothing overdue. Here's what's coming up.":"No follow-ups scheduled yet. They're set automatically when you change a status.";
+  $("fu").innerHTML=upcoming.slice(0,9).map((j,i)=>{const dd=daysBetween(T,day(j["Follow-up"]));
+    return `<div class="glass rv d${i%4+1}"><div class="when ${dd<0?"late":""}">${dd<0?`${-dd} day${dd==-1?"":"s"} overdue`:dd==0?"due today":`in ${dd} day${dd==1?"":"s"}`} · ${day(j["Follow-up"])}</div><b>${esc(j.Company)}</b><small>${esc(j.Role)}</small><div style="margin-top:10px">${chip(j.Status,M)}</div><button class="tool" style="margin-top:12px" data-c="python offeros.py packet ${esc(j.ID)} --task follow-up">Copy follow-up command · ${esc(j.ID)}</button></div>`}).join("");
+
+  /* savings: the meter */
+  const m=DATA.meter||{}, br=DATA.brain||{answered:0,total:0};
+  $("savings").innerHTML=[
+    [N(m.tokens_saved||0),"AI tokens saved","vs pasting the full resume and job description"],
+    [N(Math.round((m.minutes_saved||0)/60*10)/10>=1?Math.floor((m.minutes_saved||0)/60):m.minutes_saved||0,(m.minutes_saved||0)>=60?" h":" min"),"time saved","an estimate per job scored, summary built and answer reused"],
+    [N(m.jds_scored||0),"jobs scored locally","without using any AI"],
+    [`${N(br.answered)}<span style="color:var(--faint)">/${br.total}</span>`,"common answers ready",br.total-br.answered?`${br.total-br.answered} left: run offeros brain`:"all filled"]
+  ].map((s,i)=>`<div class="glass stat rv d${i+1}"><b>${s[0]}</b><span style="color:var(--ink)">${s[1]}</span><br><span>${s[2]}</span></div>`).join("");
+
+  /* filters from data */
+  const counts={};J.forEach(j=>counts[j.Status]=(counts[j.Status]||0)+1);
+  $("pills").innerHTML=[`<button class="pill on" data-s="">All · ${J.length}</button>`].concat(M.statuses.filter(s=>counts[s]).map(s=>`<button class="pill" data-s="${esc(s)}">${esc(s)} · ${counts[s]}</button>`)).join("");
+  $("pills").querySelectorAll(".pill").forEach(p=>p.onclick=()=>{$("pills").querySelectorAll(".pill").forEach(x=>x.classList.remove("on"));p.classList.add("on");shown=PAGE;list()});
+  /* complete status */
+  const total=J.length||1, counts2={};J.forEach(j=>counts2[j.Status]=(counts2[j.Status]||0)+1);
+  const closed=J.filter(j=>!M.active.includes(j.Status)&&!M.won.has(j.Status));
+  $("statusLede").innerHTML=J.length?`<b>${J.length}</b> roles: <b>${open.length}</b> open, <b>${won.length}</b> won, <b>${closed.length}</b> closed. Click a status to see its roles.`:"Add roles to see their status here.";
+  const ghostAfter=21, stale=J.filter(j=>j.Status==="Applied"&&j["Applied On"]&&daysBetween(day(j["Applied On"]),T)>=ghostAfter);
+  const checks=[
+    [appliedToday>=goal,`Daily goal: ${appliedToday}/${goal} applications`],
+    [!due.length,due.length?`${due.length} follow-up(s) overdue`:"No overdue follow-ups"],
+    [pct(replied.length,sent.length)>=20,`Reply rate ${pct(replied.length,sent.length)}% (aim for 20%+)`],
+    [(fits.length?fits.reduce((a,b)=>a+b,0)/fits.length:0)>=55,`Average fit ${fits.length?Math.round(fits.reduce((a,b)=>a+b,0)/fits.length):0}% (aim for 55%+)`],
+    [br.total&&br.answered>=br.total*.8,`Common answers ${br.answered}/${br.total} ready`],
+    [!stale.length,stale.length?`${stale.length} silent ${ghostAfter}+ days: mark Ghosted`:"No silent applications"],
+    [streak>=3,`Streak ${streak} day(s) (aim for 3+)`]];
+  const sc=Math.round(100*checks.filter(c=>c[0]).length/checks.length);
+  $("score").style.setProperty("--s",sc);$("scoreN").dataset.to=sc;$("scoreN").dataset.suf="";
+  $("checks").innerHTML=checks.map(c=>`<div class="check ${c[0]?"ok":"no"}"><i>${c[0]?"✓":"!"}</i><span>${esc(c[1])}</span></div>`).join("");
+  $("sboard").innerHTML=M.statuses.map((st,i)=>{const L=J.filter(j=>j.Status===st);return `<div class="glass sc rv d${i%4+1}" data-st="${esc(st)}"><div class="t"><span style="color:${M.color[st]};font-weight:600">${esc(st)}</span><b>${N(L.length)}</b></div><div class="bar"><i data-w="${pct(L.length,total)}" style="background:${M.color[st]}"></i></div><small>${pct(L.length,total)}% of all${L.length?" · "+L.slice(0,3).map(j=>esc(j.Company)).join(", ")+(L.length>3?"…":""):""}</small></div>`}).join("");
+  $("sboard").querySelectorAll(".sc").forEach(c=>c.onclick=()=>{const p=[...$("pills").querySelectorAll(".pill")].find(x=>x.dataset.s===c.dataset.st);if(p){p.click()}document.getElementById("all").scrollIntoView()});
+
+  /* assistant tips, built from the data */
+  TIPS=[];
+  const T_=(t,where,btn)=>TIPS.push({t,where,btn});
+  if(due.length)T_(`${due.length} follow-up${due.length>1?"s are":" is"} overdue. The oldest is <b>${esc(upcoming[0].Company)}</b>. A short nudge today beats a new application.`,"followups","Show follow-ups");
+  const bestOpen=J.filter(j=>j.Status===M.statuses[0]).sort((a,b)=>(b["Fit %"]||0)-(a["Fit %"]||0))[0];
+  if(bestOpen)T_(`Best match waiting: <b>${esc(bestOpen.Company)}</b>, ${bestOpen["Fit %"]}% fit. Build its summary for your AI and apply.`,"next","Open next moves");
+  if(appliedToday<goal)T_(`You're at <b>${appliedToday}/${goal}</b> today. ${goal-appliedToday} more to keep your ${streak}-day streak going.`,"today","See today");
+  if(drop&&drop.r>0)T_(`Most of your drop-off happens at <b>${esc(drop.from)} → ${esc(drop.to.replace("+",""))}</b>. Fix that step first.`,"journey","See the funnel");
+  if(bestSrc)T_(`<b>${esc(bestSrc[0])}</b> replies most (${pct(bestSrc[1].r,bestSrc[1].n)}%). Spend more of your time there.`,"works","See sources");
+  if(inter.length)T_(`${inter.length} role${inter.length>1?"s":""} in interviews. Run interview prep and log every question you get asked.`,"pipeline","See pipeline");
+  if(br.total>br.answered)T_(`${br.total-br.answered} common form answers are still empty. Fill them once with <code>offeros brain</code>.`,"saved","See savings");
+  if(stale.length)T_(`${stale.length} application${stale.length>1?"s have":" has"} been silent for ${ghostAfter}+ days. Mark ${stale.length>1?"them":"it"} Ghosted and move on.`,"status","See status");
+  T_(`Search health is <b>${sc}/100</b>. ${sc>=70?"Strong. Keep the rhythm.":"Look at the red checks for quick wins."}`,"status","Check health");
+  tipI=0;showTip();
+
+  list();
+  wire();
+}
+let TIPS=[],tipI=0,tipTimer;
+function showTip(){if(!TIPS.length)return;const t=TIPS[tipI%TIPS.length],b=$("bubble");b.classList.add("hide");
+  setTimeout(()=>{$("tip").innerHTML=t.t;$("go").textContent=t.btn;$("go").onclick=()=>document.getElementById(t.where).scrollIntoView();$("dots").textContent=`${tipI%TIPS.length+1}/${TIPS.length}`;b.classList.remove("hide")},STATIC?0:250);
+  clearTimeout(tipTimer);if(!STATIC)tipTimer=setTimeout(()=>{tipI++;showTip()},9000)}
+$("nexttip").onclick=()=>{tipI++;showTip()};
+$("sphere").onclick=()=>{const b=$("bubble");if(b.classList.contains("hide")){b.classList.remove("hide");showTip()}else b.classList.add("hide")};
+
+/* network sphere: points on a sphere, links between near neighbours, slowly rotating */
+(function(){const g=$("mesh"),R=92,n=70,P=[];for(let i=0;i<n;i++){const y=1-2*(i+.5)/n,r=Math.sqrt(1-y*y),t=i*2.39996;P.push([Math.cos(t)*r,y,Math.sin(t)*r])}
+  const E=[];for(let i=0;i<n;i++)for(let j=i+1;j<n;j++){const d=Math.hypot(P[i][0]-P[j][0],P[i][1]-P[j][1],P[i][2]-P[j][2]);if(d<.42)E.push([i,j])}
+  const lines=E.map(()=>{const l=document.createElementNS("http://www.w3.org/2000/svg","line");l.setAttribute("stroke","#d9b8ff");g.appendChild(l);return l});
+  const dots=P.map(()=>{const c=document.createElementNS("http://www.w3.org/2000/svg","circle");c.setAttribute("fill","#f3e8ff");g.appendChild(c);return c});
+  let a=0;function frame(){a+=.004;const ca=Math.cos(a),sa=Math.sin(a),cb=Math.cos(.35),sb=Math.sin(.35);
+    const Q=P.map(([x,y,z])=>{const x1=x*ca+z*sa,z1=-x*sa+z*ca,y1=y*cb-z1*sb,z2=y*sb+z1*cb;return[x1*R,y1*R,z2]});
+    E.forEach(([i,j],k)=>{const l=lines[k],z=(Q[i][2]+Q[j][2])/2;l.setAttribute("x1",Q[i][0]);l.setAttribute("y1",Q[i][1]);l.setAttribute("x2",Q[j][0]);l.setAttribute("y2",Q[j][1]);l.setAttribute("stroke-opacity",.15+.55*(z+1)/2);l.setAttribute("stroke-width",.5+.6*(z+1)/2)});
+    Q.forEach((q,i)=>{dots[i].setAttribute("cx",q[0]);dots[i].setAttribute("cy",q[1]);dots[i].setAttribute("r",.8+1.8*(q[2]+1)/2);dots[i].setAttribute("opacity",.3+.7*(q[2]+1)/2)});
+    $("corec").setAttribute("r",64+6*Math.sin(a*12));
+    if(!STATIC&&!matchMedia("(prefers-reduced-motion: reduce)").matches)requestAnimationFrame(frame)}
+  frame()})();
+
+function xlCell(j){const TR=DATA.tracker||{},row=TR.rows?.[j.ID];if(!row)return"";
+  const label=`Excel ${TR.sheet||"Applications"}!A${row}`;
+  return TR.uri?`<span><a class="xlrow" href="ms-excel:ofe|u|${esc(TR.uri)}" title="Opens the tracker. Go to row ${row} (or run: python offeros.py open ${esc(j.ID)})">▦ ${label}</a></span>`:`<span>▦ ${label}</span>`}
+const PAGE=12;let shown=PAGE;
+function list(){
+  const M=model(),q=$("q").value.toLowerCase(),st=document.querySelector(".pill.on")?.dataset.s||"",sort=$("sort").value;
+  let L=(DATA.jobs||[]).filter(j=>(!st||j.Status===st)&&(!q||Object.values(j).join(" ").toLowerCase().includes(q)));
+  const by={fit:(a,b)=>(b["Fit %"]||0)-(a["Fit %"]||0),recent:(a,b)=>day(b["Applied On"]||b.Added).localeCompare(day(a["Applied On"]||a.Added)),
+    follow:(a,b)=>(day(a["Follow-up"])||"9").localeCompare(day(b["Follow-up"])||"9"),company:(a,b)=>String(a.Company).localeCompare(String(b.Company))};
+  L.sort(by[sort]);
+  $("list").innerHTML=L.length?L.slice(0,shown).map(j=>`<article class="glass jc">
+    <div class="h"><div style="min-width:0"><div class="co">${j.URL?`<a href="${esc(j.URL)}" target="_blank" rel="noopener">${esc(j.Company)}</a>`:esc(j.Company)}</div><div class="role">${esc(j.Role)}</div></div>${chip(j.Status,M)}</div>
+    <div class="fitbar"><i style="width:${j["Fit %"]||0}%;background:${fitColor(j["Fit %"])}"></i></div>
+    <div class="meta"><span><b>${j["Fit %"]??"–"}%</b> fit</span>${j.Source?`<span>${esc(j.Source)}</span>`:""}${j.Location?`<span>${esc(j.Location)}</span>`:""}${j.Resume?`<span>resume: <b>${esc(j.Resume)}</b></span>`:""}${j["Applied On"]?`<span>applied ${day(j["Applied On"])}</span>`:""}${j["Follow-up"]?`<span>follow-up ${day(j["Follow-up"])}</span>`:""}<span>${esc(j.ID)}</span>${xlCell(j)}</div>
+    ${j["Missing Skills"]?`<div class="gaps">Gaps: ${esc(j["Missing Skills"])}</div>`:""}${j.Notes?`<div class="gaps">${esc(j.Notes)}</div>`:""}
+  </article>`).join(""):`<div class="empty" style="grid-column:1/-1">Nothing matches. Try another search or filter.</div>`;
+  $("more").hidden=L.length<=shown;$("more").textContent=`Show ${Math.min(PAGE,L.length-shown)} more`;
+}
+
+/* ---------- motion: reveal, bars, counters, parallax, chapter nav */
+let io;
+function wire(){
+  document.querySelectorAll("[data-c]").forEach(b=>b.onclick=()=>copy(b.dataset.c));
+  io?.disconnect();
+  io=new IntersectionObserver(es=>es.forEach(e=>{if(!e.isIntersecting)return;const el=e.target;el.classList.add("in");
+    el.querySelectorAll("[data-w]").forEach(b=>b.style.width=b.dataset.w+"%");
+    el.querySelectorAll("[data-h]").forEach(b=>b.style.height=b.dataset.h+"%");
+    el.querySelectorAll("[data-count]").forEach(c=>{if(!c.dataset.done){c.dataset.done=1;count(c)}});
+    if(el.matches("[data-count]")&&!el.dataset.done){el.dataset.done=1;count(el)}
+    io.unobserve(el)}),{threshold:.15});
+  document.querySelectorAll(".rv,.glass,#ring,section").forEach(el=>{if(STATIC){el.classList.add("in");el.querySelectorAll("[data-w]").forEach(b=>b.style.width=b.dataset.w+"%");el.querySelectorAll("[data-h]").forEach(b=>b.style.height=b.dataset.h+"%");el.querySelectorAll("[data-count]").forEach(c=>count(c))}else io.observe(el)});
+}
+function copy(t){(navigator.clipboard?navigator.clipboard.writeText(t):Promise.reject()).then(()=>toast("Copied: "+t)).catch(()=>toast("Copy failed. Select the text by hand."))}
+function toast(t){const e=$("toast");e.textContent=t;e.classList.add("on");clearTimeout(e._t);e._t=setTimeout(()=>e.classList.remove("on"),1800)}
+
+const secs=[...document.querySelectorAll("section[data-title]")];
+$("chapters").innerHTML=secs.map(s=>`<a href="#${s.id}" data-id="${s.id}">${s.dataset.title}</a>`).join("");
+addEventListener("scroll",()=>{
+  const y=scrollY,h=document.documentElement.scrollHeight-innerHeight;
+  $("progress").style.width=(h?100*y/h:0)+"%";
+  if(!STATIC)$("bg").style.transform=`translateY(${y*-.06}px) scale(1.05)`;
+  let cur=secs[0].id;secs.forEach(s=>{if(s.getBoundingClientRect().top<innerHeight*.4)cur=s.id});
+  document.querySelectorAll(".chapters a").forEach(a=>a.classList.toggle("on",a.dataset.id===cur));
+},{passive:true});
+
+/* drifting bokeh orbs, colours sampled from the background palette */
+if(!STATIC)["rgba(242,167,122,.5)","rgba(226,71,90,.5)","rgba(143,184,255,.4)","rgba(255,236,220,.35)"].forEach((c,i)=>{const o=document.createElement("div");o.className="orb";
+  const s=40+Math.random()*90;Object.assign(o.style,{width:s+"px",height:s+"px",left:Math.random()*90+"vw",top:Math.random()*90+"vh",background:`radial-gradient(circle,${c},transparent 70%)`,animationDelay:-i*4+"s",animationDuration:14+i*4+"s"});document.body.appendChild(o)});
+
+/* ---------- open a tracker straight from Excel (statuses read from its Lists sheet) */
+function loadSheetJS(){return window.XLSX?Promise.resolve():new Promise((ok,no)=>{const s=document.createElement("script");s.src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js";s.onload=ok;s.onerror=()=>no(new Error("Couldn't load the Excel reader. Run `python offeros.py export` instead."));document.head.appendChild(s)})}
+async function readFile(f){
+  try{
+    if(/\.json$/i.test(f.name))DATA=JSON.parse(await f.text());
+    else{await loadSheetJS();const wb=XLSX.read(await f.arrayBuffer(),{cellDates:true});
+      const iso=v=>v instanceof Date?v.toISOString().slice(0,10):v;
+      const jobs=XLSX.utils.sheet_to_json(wb.Sheets["Applications"]||wb.Sheets[wb.SheetNames[0]],{defval:null}).filter(r=>r.ID).map(r=>{for(const k in r)r[k]=iso(r[k]);if(r["Fit %"]!=null)r["Fit %"]=+r["Fit %"];return r});
+      const lists=wb.Sheets["Lists"]?XLSX.utils.sheet_to_json(wb.Sheets["Lists"],{defval:null}).map(r=>r.Status).filter(Boolean):null;
+      DATA={...DATA,jobs,tracker:{name:f.name,sheet:"Applications",rows:Object.fromEntries(jobs.map((j,i)=>[j.ID,i+2]))},statuses:lists||DATA.statuses,generated:new Date().toISOString().slice(0,16),next:null,applied_today:null}}
+    shown=PAGE;render();toast(`Loaded ${(DATA.jobs||[]).length} roles`);
+  }catch(e){toast(e.message)}
+}
+$("load").onclick=()=>$("file").click();
+$("file").onchange=e=>e.target.files[0]&&readFile(e.target.files[0]);
+addEventListener("dragover",e=>{e.preventDefault();$("drop").classList.add("on")});
+$("drop").addEventListener("dragleave",()=>$("drop").classList.remove("on"));
+addEventListener("drop",e=>{e.preventDefault();$("drop").classList.remove("on");e.dataTransfer.files[0]&&readFile(e.dataTransfer.files[0])});
+$("priv").onclick=()=>{const on=document.body.classList.toggle("blur");save({blur:on});$("priv").textContent=on?"Show name":"Blur name"};
+$("q").addEventListener("input",()=>{shown=PAGE;list()});$("sort").addEventListener("change",list);
+$("more").onclick=()=>{shown+=PAGE;list()};
+render();
+</script>
+</body>
+</html>

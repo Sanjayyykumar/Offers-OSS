@@ -1,0 +1,4 @@
+company,role,location,source,url,jd,notes
+Acme Fintech,Java Backend Engineer,Bengaluru,Naukri,https://example.com/jobs/1,"We need 3-5 years of Java, Spring Boot, Microservices and Kafka. Must have REST API design and SQL. Nice to have Docker, AWS.",
+NovaAI Labs,Founding Engineer - AI Agents,Remote,Wellfound,https://example.com/jobs/2,"Build AI agents with TypeScript, Claude, LLM tool use and Trigger.dev. 2+ years experience. You will own the agent platform end to end.",referral possible
+Dassault Partner Co,ENOVIA 3DEXPERIENCE Developer,Pune,Company site,https://example.com/jobs/3,"Requires 3+ years ENOVIA 3DX customisation, Java, TCL/MQL and PLM data model experience.",

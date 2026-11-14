@@ -1,0 +1,18 @@
+# personal data - never commit
+profile/profile.yaml
+profile/resumes/*
+!profile/resumes/README.md
+tracker/*.xlsx
+!tracker/OffersOSS_Tracker.template.xlsx
+packets/
+jobs/jds/
+jobs/inbox.csv
+dashboard/data.js
+brain/companies/*.md
+!brain/companies/README.md
+__pycache__/
+.pytest_cache/
+.venv/
+brain/answers.yaml
+brain/learnings.md
+brain/meter.json

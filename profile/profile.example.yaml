@@ -1,0 +1,61 @@
+# Offers OSS profile - the ONLY place your facts live.
+# Every AI prompt is built from these lines, so keep them short, true and specific.
+# Copy to profile.yaml (done by `offeros init`). profile.yaml is git-ignored.
+
+display_name: "Your Name"          # shown on the dashboard
+headline: "Java Full Stack Engineer | Spring Boot, Microservices, Kafka | 3 yrs | Immediate joiner"
+years_experience: 3
+location: "Bengaluru, India"
+notice_period: "Immediate"
+
+# Skills you can defend in an interview. "a|b" = aliases.
+skills:
+  - java
+  - spring boot|springboot
+  - microservices
+  - kafka
+  - rest api|rest apis|restful
+  - sql
+  - oracle
+  - hibernate
+  - jpa
+  - junit
+  - docker
+  - git
+  - jenkins
+  - react
+  - javascript
+  - aws
+  - llm|llms
+  - prompt engineering
+  - enovia
+  - 3dexperience|3dx
+  - plm
+
+# Fit is capped at 40% if none of these appear in the JD.
+must_have_any: [java, spring boot, plm, enovia, ai agents, llm]
+# Fit is capped at 20% if any of these appear.
+deal_breakers: [night shift only, unpaid, bond of]
+
+# One-line, verifiable facts. The AI may ONLY use these. Numbers beat adjectives.
+facts:
+  - "3 yrs Java/Spring Boot backend across e-commerce, networking (Nokia NSP) and PLM (ENOVIA 3DX)"
+  - "Built Kafka-based microservices; owned REST APIs end to end, incl. JUnit/Mockito tests"
+  - "Integrated Oracle Cloud Fusion with downstream services"
+  - "Uses AI-assisted development daily (Claude, ChatGPT, Gemini) to ship faster"
+  - "Career break Aug 2025 - May 2026: family responsibilities; upskilled in Java with AI tools"
+
+# Map each resume file to the keywords that should pick it.
+resume_variants:
+  - name: java
+    file: resumes/Java_Full_Stack.pdf
+    keywords: [java, spring boot, microservices, full stack, react, backend]
+  - name: ai
+    file: resumes/AI_GenAI_Engineer.pdf
+    keywords: [llm, genai, ai agents, rag, prompt, openai, claude, agentic]
+  - name: plm
+    file: resumes/ENOVIA_PLM.pdf
+    keywords: [enovia, 3dexperience, plm, tcl, mql, catia]
+  - name: support
+    file: resumes/App_Support_Integration.pdf
+    keywords: [support, integration, l2, l3, incident, oracle fusion, itil]

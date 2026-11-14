@@ -1,0 +1,132 @@
+# Saved answers to common questions. `offeros answer "<question>"` finds the closest one (0 tokens).
+# Replace <...> placeholders with YOUR truth. Keep each answer under 60 words.
+- id: A01
+  q: "What is your notice period?"
+  also: [When can you join, earliest joining date, how soon can you start, last working day]
+  a: "I can join immediately. <or: My notice period is 30 days and is negotiable.>"
+  tip: "Say 'immediate' only if it is true on the joining date you give."
+  updated: '2026-11-14'
+- id: A02
+  q: "What is your current CTC and expected CTC?"
+  also: [salary expectations, expected salary, current salary, compensation expectation, ctc]
+  a: "My current CTC is <X LPA>. Based on the role and market data, I am looking for <Y-Z LPA>, and I am open to discussing the full package."
+  tip: "Give a range whose bottom you are happy with. Never invent a current CTC - offer letters and payslips get checked."
+  updated: '2026-11-14'
+- id: A03
+  q: "Why are you looking for a change?"
+  also: [why are you leaving, reason for job change, why switch, why leave current company]
+  a: "I want to work on <AI-enabled / larger-scale> systems and own features end to end. My current role gave me <specific skill>; this role lets me grow it further."
+  tip: "Forward-looking, never negative about the current employer."
+  updated: '2026-11-14'
+- id: A04
+  q: "Can you explain the gap in your career?"
+  also: [career break, employment gap, what did you do between jobs, gap year]
+  a: "I took a planned break to manage family responsibilities and used the time to upskill in <area>. That is fully resolved, and I have been working again since <month year>."
+  tip: "Say it once, calmly, end on the present. Do not over-explain."
+  updated: '2026-11-14'
+- id: A05
+  q: "Are you open to relocation?"
+  also: [willing to relocate, relocation, work from office, hybrid, onsite]
+  a: "Yes, I am open to <cities> and comfortable with <hybrid / onsite> work."
+  updated: '2026-11-14'
+- id: A06
+  q: "Tell me about yourself"
+  also: [introduce yourself, walk me through your resume, brief introduction]
+  a: "I am a <role> with <N> years in <domains>. Most recently I <biggest result with a number>. I am now looking for <target role> where I can <value you bring>."
+  tip: "45 seconds. Past -> present -> why this role."
+  updated: '2026-11-14'
+- id: A07
+  q: "Do you have any other offers?"
+  also: [other interviews, pipeline, competing offers]
+  a: "I am in the final stages with a couple of companies, but this role is my top preference because <specific reason>."
+  tip: "Only mention offers you actually hold."
+  updated: '2026-11-14'
+- id: A08
+  q: "How many years of experience do you have in Java?"
+  also: [years of experience, total experience, relevant experience, experience in spring boot]
+  a: "<N> years total, of which <M> years are hands-on Java and Spring Boot in production."
+  updated: '2026-11-14'
+- id: A09
+  q: "Are you authorised to work in this country? Do you need visa sponsorship?"
+  also: [work authorization, visa sponsorship, work permit]
+  a: "<Yes, I am authorised to work in X and do not need sponsorship.>"
+  updated: '2026-11-14'
+- id: A10
+  q: "Why do you want to join our company?"
+  also: [why us, why this company, what do you know about us]
+  a: "<One specific thing about their product> + <one thing about the role that matches your strongest fact>. (Generate per company with `offeros packet <ID> --task screening-answers`.)"
+  updated: '2026-11-14'
+# ---- Questions job-site application forms ask most (Naukri, LinkedIn, Indeed, Instahyre, Workday, Greenhouse, Lever)
+# Anything still containing <...> counts as UNANSWERED. Run `python offeros.py brain` to fill them one by one.
+- id: A11
+  q: "How many years of experience do you have with <skill>?"
+  also: [years of work experience with, how many years of experience using, experience in years]
+  a: "<N> years. (Answer per skill; keep it consistent with your resume dates.)"
+  tip: "Forms often auto-reject below a number. Be exact, never round up."
+  updated: '2026-11-14'
+- id: A12
+  q: "What is your highest level of education?"
+  also: [highest qualification, degree, education level, graduation year, university]
+  a: "<B.E. / B.Tech in X, University, Year>"
+  updated: '2026-11-14'
+- id: A13
+  q: "What is your current location?"
+  also: [current city, where are you based, location]
+  a: "<City, State, Country>"
+  updated: '2026-11-14'
+- id: A14
+  q: "Are you comfortable commuting to the office location?"
+  also: [comfortable commuting, reliably commute, work from office 5 days, office location]
+  a: "<Yes, I can commute to X / I am open to relocating to X.>"
+  updated: '2026-11-14'
+- id: A15
+  q: "Are you willing to work in rotational or night shifts?"
+  also: [shift timings, rotational shifts, night shift, uk shift, us shift]
+  a: "<Yes / Only general or UK shift / No.>"
+  updated: '2026-11-14'
+- id: A16
+  q: "What is your expected date of joining?"
+  also: [date of joining, available start date, start date]
+  a: "<Immediately / DD Mon YYYY>"
+  updated: '2026-11-14'
+- id: A17
+  q: "Please share your LinkedIn profile, GitHub or portfolio URL"
+  also: [linkedin url, github url, portfolio, website]
+  a: "<https://linkedin.com/in/... | https://github.com/...>"
+  updated: '2026-11-14'
+- id: A18
+  q: "How would you rate your proficiency in <skill> on a scale of 1-10?"
+  also: [rate yourself, proficiency level, scale of 1 to 10, self rating]
+  a: "<7-8 for daily-use skills; 5-6 for working knowledge. Never 10.>"
+  tip: "10 invites trick questions. 8 with a concrete example is stronger."
+  updated: '2026-11-14'
+- id: A19
+  q: "Have you worked for this company or its clients before?"
+  also: [previously worked, former employee, ever been employed by]
+  a: "<No / Yes, as X from Y to Z.>"
+  updated: '2026-11-14'
+- id: A20
+  q: "Do you have a valid passport?"
+  also: [passport, travel onsite, willing to travel]
+  a: "<Yes, valid till YYYY / No.>"
+  updated: '2026-11-14'
+- id: A21
+  q: "Are you serving notice period? What is your last working day?"
+  also: [serving notice, last working day, lwd, buyout]
+  a: "<Not applicable - available immediately / Yes, LWD is DD Mon YYYY.>"
+  updated: '2026-11-14'
+- id: A22
+  q: "Why should we hire you? Summarise your fit in 2-3 lines"
+  also: [why should we hire you, cover letter, summary, additional information, anything else]
+  a: "<Generate per job: python offeros.py packet ID --task cover-note>"
+  updated: '2026-11-14'
+- id: A23
+  q: "Are you open to contract, C2H or full-time roles?"
+  also: [employment type, contract to hire, c2h, contract role, full time]
+  a: "<Full-time preferred; open to C2H for the right role.>"
+  updated: '2026-11-14'
+- id: A24
+  q: "Do you hold any certifications?"
+  also: [certifications, certified, licenses]
+  a: "<List real ones only, or: No formal certifications; I learn by building - e.g. X.>"
+  updated: '2026-11-14'
