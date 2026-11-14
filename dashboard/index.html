@@ -356,7 +356,7 @@ function render(){
   /* Excel link: ms-excel: opens Excel desktop; the plain file link works everywhere else */
   const TR=DATA.tracker||{};
   const xlHref=TR.uri?`ms-excel:ofe|u|${TR.uri}`:"";
-  $("xl").style.display=TR.uri||TR.name?"":"none";
+  $("xl").style.display=(TR.uri||TR.name)&&location.protocol==="file:"?"":"none";
   $("xl").href=xlHref||"#";$("xl").title=TR.path?`Open ${TR.path} in Excel (or run: python offers.py open)`:`${TR.name||"Tracker"} - run: python offers.py open`;
   $("xl").onclick=e=>{if(!xlHref){e.preventDefault();copy("python offers.py open")}};
   /* brand */
@@ -497,7 +497,7 @@ $("sphere").onclick=()=>{const b=$("bubble");if(b.classList.contains("hide")){b.
 
 function xlCell(j){const TR=DATA.tracker||{},row=TR.rows?.[j.ID];if(!row)return"";
   const label=`Excel ${TR.sheet||"Applications"}!A${row}`;
-  return TR.uri?`<span><a class="xlrow" href="ms-excel:ofe|u|${esc(TR.uri)}" title="Opens the tracker. Go to row ${row} (or run: python offers.py open ${esc(j.ID)})">▦ ${label}</a></span>`:`<span>▦ ${label}</span>`}
+  return TR.uri&&location.protocol==="file:"?`<span><a class="xlrow" href="ms-excel:ofe|u|${esc(TR.uri)}" title="Opens the tracker. Go to row ${row} (or run: python offers.py open ${esc(j.ID)})">▦ ${label}</a></span>`:`<span>▦ ${label}</span>`}
 const PAGE=12;let shown=PAGE;
 function list(){
   const M=model(),q=$("q").value.toLowerCase(),st=document.querySelector(".pill.on")?.dataset.s||"",sort=$("sort").value;
