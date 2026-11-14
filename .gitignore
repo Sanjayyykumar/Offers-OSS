@@ -16,3 +16,5 @@ __pycache__/
 brain/answers.yaml
 brain/learnings.md
 brain/meter.json
+*.egg-info/
+build/

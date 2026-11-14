@@ -1,0 +1,10 @@
+name: Share your results
+description: Did Offers OSS help? Share anonymised numbers - it helps other job seekers.
+labels: [results]
+body:
+  - type: input
+    attributes: { label: Field / role, placeholder: "Java backend, 3 yrs" }
+  - type: input
+    attributes: { label: Applications, reply rate, interviews, offers, placeholder: "40 sent, 28% replies, 6 interviews, 1 offer" }
+  - type: textarea
+    attributes: { label: What helped most? }

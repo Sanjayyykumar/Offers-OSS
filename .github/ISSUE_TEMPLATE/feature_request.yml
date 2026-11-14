@@ -1,0 +1,9 @@
+name: Feature request
+description: Suggest an idea. Features that auto-submit, scrape or log in will be declined.
+labels: [enhancement]
+body:
+  - type: textarea
+    attributes: { label: Problem you're facing in your job hunt }
+    validations: { required: true }
+  - type: textarea
+    attributes: { label: Idea }

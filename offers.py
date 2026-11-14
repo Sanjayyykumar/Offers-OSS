@@ -6,19 +6,19 @@ One file. Local-first. Your Excel tracker is the source of truth,
 the dashboard is a view, and any AI (Claude, ChatGPT, Gemini, Copilot,
 a local model) does only the writing - on a token-lean "packet".
 
-    python offeros.py setup                # 6 questions -> ready (runs init)
-    python offeros.py go                   # daily cockpit: numbered choices, counters
-    python offeros.py brain                # fill common job-site questions once
-    python offeros.py add --company Acme --role "Java Dev" --jd jd.txt --url https://...
-    python offeros.py import jobs/inbox.csv
-    python offeros.py triage               # best-fit jobs first (zero AI tokens)
-    python offeros.py packet OF-0003       # token-lean prompt for any AI
-    python offeros.py status OF-0003 Applied --note "Referral via Priya"
-    python offeros.py due                  # follow-ups due today
-    python offeros.py stats                # pipeline in the terminal
-    python offeros.py export               # refresh dashboard/data.js
-    python offeros.py answer "notice period?"   # second brain, 0 tokens
-    python offeros.py learn --feedback "Recruiter wanted Kafka depth" --kind interview
+    python offers.py setup                # 6 questions -> ready (runs init)
+    python offers.py go                   # daily cockpit: numbered choices, counters
+    python offers.py brain                # fill common job-site questions once
+    python offers.py add --company Acme --role "Java Dev" --jd jd.txt --url https://...
+    python offers.py import jobs/inbox.csv
+    python offers.py triage               # best-fit jobs first (zero AI tokens)
+    python offers.py packet OF-0003       # token-lean prompt for any AI
+    python offers.py status OF-0003 Applied --note "Referral via Priya"
+    python offers.py due                  # follow-ups due today
+    python offers.py stats                # pipeline in the terminal
+    python offers.py export               # refresh dashboard/data.js
+    python offers.py answer "notice period?"   # second brain, 0 tokens
+    python offers.py learn --feedback "Recruiter wanted Kafka depth" --kind interview
 
 License: MIT
 """
@@ -43,7 +43,8 @@ except ImportError:  # pragma: no cover
     sys.exit("Missing dependencies. Run:  pip install -r requirements.txt")
 
 __version__ = "1.0.0"
-ROOT = Path(__file__).resolve().parent
+import os
+ROOT = Path(os.environ.get("OFFERS_HOME") or Path(__file__).resolve().parent)  # your workspace folder
 TRACKER = ROOT / "tracker" / "OffersOSS_Tracker.xlsx"
 PROFILE = ROOT / "profile" / "profile.yaml"
 PROFILE_EXAMPLE = ROOT / "profile" / "profile.example.yaml"
@@ -86,7 +87,7 @@ def today() -> dt.date:
 
 
 def die(msg: str) -> None:
-    sys.exit(f"offeros: {msg}")
+    sys.exit(f"offers: {msg}")
 
 
 def norm(s: str) -> str:
@@ -104,7 +105,7 @@ def contains(text: str, term: str) -> bool:
 def load_profile() -> dict:
     path = PROFILE if PROFILE.exists() else PROFILE_EXAMPLE
     if not path.exists():
-        die("no profile found. Run: python offeros.py init")
+        die("no profile found. Run: python offers.py init")
     return yaml.safe_load(path.read_text(encoding="utf-8")) or {}
 
 
@@ -320,13 +321,13 @@ def build_workbook(path: Path) -> None:
     guide.column_dimensions["A"].width = 110
     rows = [
         "HOW TO USE THIS TRACKER",
-        "1. You can edit the Applications sheet by hand OR let `python offeros.py` write to it. Both are fine.",
+        "1. You can edit the Applications sheet by hand OR let `python offers.py` write to it. Both are fine.",
         "2. Editable columns: everything on Applications. Status and Source have drop-downs (from the Lists sheet).",
         "3. Do not edit the Dashboard sheet: every number there is a formula.",
         "4. Fit % is computed locally from your profile.yaml skills vs the job description (0 AI tokens).",
         "5. Follow-up is set automatically when you change Status with the CLI: Applied +7d, Viewed +4d, Screening +3d, Interview/Offer +2d.",
         "6. Red bold follow-up date = overdue. Green bold Fit % = 70 or higher.",
-        "7. Run `python offeros.py export` to refresh the HTML dashboard (dashboard/index.html).",
+        "7. Run `python offers.py export` to refresh the HTML dashboard (dashboard/index.html).",
         "Example row format: OF-0001 | 2026-11-14 | Acme Corp | Java Developer | Bengaluru | Naukri | https://... | java | 82 | java, spring boot | kubernetes | Applied | 2026-11-14 | 2026-11-21 | Priya (HR) | Referral",
     ]
     for i, t in enumerate(rows, 1):
@@ -343,7 +344,7 @@ def build_workbook(path: Path) -> None:
 
 def open_tracker():
     if not TRACKER.exists():
-        die("tracker not found. Run: python offeros.py init")
+        die("tracker not found. Run: python offers.py init")
     wb = openpyxl.load_workbook(TRACKER)
     return wb, wb["Applications"]
 
@@ -404,7 +405,7 @@ def cmd_init(a) -> None:
             print(f"Created {live.relative_to(ROOT)}")
     for d in ("packets", "jobs/jds"):
         (ROOT / d).mkdir(parents=True, exist_ok=True)
-    print("Next: edit profile/profile.yaml, then `python offeros.py add ...` or `import jobs/inbox.csv`")
+    print("Next: edit profile/profile.yaml, then `python offers.py add ...` or `import jobs/inbox.csv`")
 
 
 def add_job(ws, existing: list[dict], profile: dict, *, company: str, role: str, jd: str,
@@ -567,7 +568,7 @@ def cmd_due(a) -> None:
     if ghost:
         print(f"\nNo reply in {GHOST_AFTER_DAYS}+ days - consider `status <ID> Ghosted`:")
         print(table(ghost, ["ID", "Company", "Role", "Applied On"]))
-    print("\nTip: `python offeros.py packet <ID> --task follow-up` drafts the message.")
+    print("\nTip: `python offers.py packet <ID> --task follow-up` drafts the message.")
 
 
 def summary(items: list[dict]) -> dict:
@@ -653,12 +654,12 @@ def cmd_answer(a) -> None:
     e, sc = best_answer(a.question, load_answers())
     if not e or sc < 0.2:
         print("Not in your second brain yet. Answer it once, then save it:\n"
-              f'  python offeros.py learn --q "{a.question}" --a "<your answer>"')
+              f'  python offers.py learn --q "{a.question}" --a "<your answer>"')
         return
     print(f"[{e.get('id', '?')}] match {round(sc * 100)}%  (updated {e.get('updated', '-')})\n")
     print(e["a"].strip())
     if is_template(e["a"]):
-        print("\n(!) still a template - fill it once with `python offeros.py brain`")
+        print("\n(!) still a template - fill it once with `python offers.py brain`")
     else:
         bump(answers_reused=1, tokens_saved=150, minutes_saved=2)
     if e.get("tip"):
@@ -760,7 +761,7 @@ def cmd_setup(a) -> None:
     save_answers(bank_)
     cov = brain_coverage()
     print(f"\nDone. Profile saved, {len(p['skills'])} skills, brain {cov['answered']}/{cov['total']}.")
-    print("Next: `python offeros.py brain` (fill common questions once)  then  `python offeros.py go`.")
+    print("Next: `python offers.py brain` (fill common questions once)  then  `python offers.py go`.")
 
 
 def next_actions(items: list[dict]) -> list[dict]:
@@ -768,16 +769,16 @@ def next_actions(items: list[dict]) -> list[dict]:
     acts = []
     due = [r for r in items if r["Follow-up"] and r["Follow-up"] <= t and r["Status"] in ACTIVE]
     if due:
-        acts.append({"label": f"Send {len(due)} follow-up(s)", "cmd": "python offeros.py due"})
+        acts.append({"label": f"Send {len(due)} follow-up(s)", "cmd": "python offers.py due"})
     top = sorted([r for r in items if r["Status"] == "Shortlisted"], key=lambda r: -(r["Fit %"] or 0))
     if top:
         r = top[0]
-        acts.append({"label": f"Apply: {r['Company']} - {r['Role']} ({r['Fit %']}%)", "cmd": f"python offeros.py packet {r['ID']}"})
+        acts.append({"label": f"Apply: {r['Company']} - {r['Role']} ({r['Fit %']}%)", "cmd": f"python offers.py packet {r['ID']}"})
     cov = brain_coverage()
     if cov["answered"] < cov["total"]:
-        acts.append({"label": f"Fill {cov['total'] - cov['answered']} common answers once", "cmd": "python offeros.py brain"})
+        acts.append({"label": f"Fill {cov['total'] - cov['answered']} common answers once", "cmd": "python offers.py brain"})
     if (ROOT / "jobs" / "inbox.csv").exists():
-        acts.append({"label": "Import new jobs from inbox", "cmd": "python offeros.py import jobs/inbox.csv"})
+        acts.append({"label": "Import new jobs from inbox", "cmd": "python offers.py import jobs/inbox.csv"})
     return acts[:4]
 
 
@@ -827,7 +828,7 @@ def cmd_open(a) -> None:
     import os
     import subprocess
     if not TRACKER.exists():
-        die("tracker not found. Run: python offeros.py init")
+        die("tracker not found. Run: python offers.py init")
     print(f"Opening {TRACKER}" + (f"  -> look at row {find_row(open_tracker()[1], a.id)} for {a.id.upper()}" if a.id else ""))
     if sys.platform.startswith("win"):
         os.startfile(TRACKER)  # type: ignore[attr-defined]
@@ -848,11 +849,11 @@ def cmd_doctor(a) -> None:
         n = len(profile_skills(pr))
         print(f"  [{'ok' if n >= 5 else '!!'}] skills     {n} listed in profile.yaml")
         print(f"  [{'ok' if pr.get('resume_variants') else '!!'}] variants   {len(pr.get('resume_variants', []))} resume variant(s)")
-    print("All good." if ok else "Run `python offeros.py init` to fix missing items.")
+    print("All good." if ok else "Run `python offers.py init` to fix missing items.")
 
 
 def main(argv=None) -> None:
-    p = argparse.ArgumentParser(prog="offeros", description="Offers OSS - compliant, AI-agnostic job-hunt OS")
+    p = argparse.ArgumentParser(prog="offers", description="Offers OSS - compliant, AI-agnostic job-hunt OS")
     p.add_argument("--version", action="version", version=f"Offers OSS {__version__}")
     sub = p.add_subparsers(dest="cmd", required=True)
 

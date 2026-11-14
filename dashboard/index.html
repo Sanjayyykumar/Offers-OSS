@@ -357,8 +357,8 @@ function render(){
   const TR=DATA.tracker||{};
   const xlHref=TR.uri?`ms-excel:ofe|u|${TR.uri}`:"";
   $("xl").style.display=TR.uri||TR.name?"":"none";
-  $("xl").href=xlHref||"#";$("xl").title=TR.path?`Open ${TR.path} in Excel (or run: python offeros.py open)`:`${TR.name||"Tracker"} - run: python offeros.py open`;
-  $("xl").onclick=e=>{if(!xlHref){e.preventDefault();copy("python offeros.py open")}};
+  $("xl").href=xlHref||"#";$("xl").title=TR.path?`Open ${TR.path} in Excel (or run: python offers.py open)`:`${TR.name||"Tracker"} - run: python offers.py open`;
+  $("xl").onclick=e=>{if(!xlHref){e.preventDefault();copy("python offers.py open")}};
   /* brand */
   $("bProduct").textContent=B.product.toUpperCase();$("bBy").textContent="by "+B.by;
   $("fProduct").textContent=B.product.toUpperCase();$("fBy").textContent=B.by;$("fTag").textContent=B.tagline;
@@ -370,7 +370,7 @@ function render(){
   $("greet").innerHTML=`Good ${h<12?"morning":h<17?"afternoon":"evening"}, <em class="pii">${esc(first)}</em>.`;
   $("heroLede").innerHTML=J.length
     ?`You're tracking <b>${J.length}</b> roles, <b>${open.length}</b> still open. ${appliedToday>=goal?"Today's goal is done. Spend the rest on follow-ups and prep.":`<b>${goal-appliedToday}</b> more application${goal-appliedToday==1?"":"s"} to hit today's goal.`}`
-    :`No roles yet. Run <code>python offeros.py import jobs/inbox.csv</code>, then <code>export</code>, or open your tracker above.`;
+    :`No roles yet. Run <code>python offers.py import jobs/inbox.csv</code>, then <code>export</code>, or open your tracker above.`;
   const ring=$("ring");ring.style.setProperty("--p",Math.min(100,pct(appliedToday,goal)));
   $("ringNum").dataset.to=appliedToday;$("ringLab").textContent=`of ${goal} applied today`;
   const streak=DATA.streak||0;
@@ -382,9 +382,9 @@ function render(){
   /* next moves: from export, else derived */
   let acts=DATA.next?.length?DATA.next:[];
   if(!acts.length){
-    if(due.length)acts.push({label:`Send ${due.length} follow-up(s)`,cmd:"python offeros.py due"});
+    if(due.length)acts.push({label:`Send ${due.length} follow-up(s)`,cmd:"python offers.py due"});
     const best=J.filter(j=>j.Status===M.statuses[0]).sort((a,b)=>(b["Fit %"]||0)-(a["Fit %"]||0))[0];
-    if(best)acts.push({label:`Apply: ${best.Company} - ${best.Role} (${best["Fit %"]}%)`,cmd:`python offeros.py packet ${best.ID}`});
+    if(best)acts.push({label:`Apply: ${best.Company} - ${best.Role} (${best["Fit %"]}%)`,cmd:`python offers.py packet ${best.ID}`});
   }
   const why=a=>/follow/i.test(a.label)?"Follow-ups convert better than new applications. Draft each one in seconds."
     :/apply/i.test(a.label)?"Your highest-fit open role. The packet gives any AI just what it needs."
@@ -403,7 +403,7 @@ function render(){
   $("funnel").innerHTML=steps.map(s=>`<div class="fs"><span class="lab">${esc(s[0])}</span><div class="track"><b data-w="${Math.max(s[1]?3:0,100*s[1]/top)}"></b></div><span class="v">${N(s[1])}<small>${pct(s[1],top)}%</small></span></div>`).join("");
   let drop=null;for(let i=1;i<steps.length;i++){if(M.won.has(steps[i-1][0]))break;}for(let i=1;i<steps.length&&!M.won.has(steps[i-1][0]);i++){const loss=steps[i-1][1]-steps[i][1];if(steps[i-1][1]&&(!drop||loss/steps[i-1][1]>drop.r))drop={from:steps[i-1][0],to:steps[i][0],r:loss/steps[i-1][1]}}
   $("funnelLede").innerHTML=sent.length?`Of <b>${sent.length}</b> applications, <b>${replied.length}</b> got a reply and <b>${inter.length}</b> reached interviews.`:"Your funnel fills as soon as you mark a job Applied.";
-  $("funnelInsight").innerHTML=drop&&drop.r>0?`Biggest drop: <b>${esc(drop.from)} → ${esc(drop.to.replace("+",""))}</b> (${Math.round(drop.r*100)}% lost). ${/applied/i.test(drop.from)?"Tailor the top third of your resume and choose higher-fit roles.":"Prepare with <code>offeros packet &lt;ID&gt; --task interview-prep</code>."}`:"Not enough data for a pattern yet.";
+  $("funnelInsight").innerHTML=drop&&drop.r>0?`Biggest drop: <b>${esc(drop.from)} → ${esc(drop.to.replace("+",""))}</b> (${Math.round(drop.r*100)}% lost). ${/applied/i.test(drop.from)?"Tailor the top third of your resume and choose higher-fit roles.":"Prepare with <code>offers packet &lt;ID&gt; --task interview-prep</code>."}`:"Not enough data for a pattern yet.";
 
   /* sources */
   const src={};sent.forEach(j=>{const s=j.Source||"Other";(src[s]=src[s]||{n:0,r:0}).n++;if(M.replied.has(j.Status))src[s].r++});
@@ -423,7 +423,7 @@ function render(){
   const upcoming=J.filter(j=>j["Follow-up"]&&M.active.includes(j.Status)).sort((a,b)=>day(a["Follow-up"]).localeCompare(day(b["Follow-up"])));
   $("fuLede").innerHTML=due.length?`<b>${due.length}</b> due now. A short, specific nudge often gets a reply where silence never does.`:upcoming.length?"Nothing overdue. Here's what's coming up.":"No follow-ups scheduled yet. They're set automatically when you change a status.";
   $("fu").innerHTML=upcoming.slice(0,9).map((j,i)=>{const dd=daysBetween(T,day(j["Follow-up"]));
-    return `<div class="glass rv d${i%4+1}"><div class="when ${dd<0?"late":""}">${dd<0?`${-dd} day${dd==-1?"":"s"} overdue`:dd==0?"due today":`in ${dd} day${dd==1?"":"s"}`} · ${day(j["Follow-up"])}</div><b>${esc(j.Company)}</b><small>${esc(j.Role)}</small><div style="margin-top:10px">${chip(j.Status,M)}</div><button class="tool" style="margin-top:12px" data-c="python offeros.py packet ${esc(j.ID)} --task follow-up">Copy follow-up command · ${esc(j.ID)}</button></div>`}).join("");
+    return `<div class="glass rv d${i%4+1}"><div class="when ${dd<0?"late":""}">${dd<0?`${-dd} day${dd==-1?"":"s"} overdue`:dd==0?"due today":`in ${dd} day${dd==1?"":"s"}`} · ${day(j["Follow-up"])}</div><b>${esc(j.Company)}</b><small>${esc(j.Role)}</small><div style="margin-top:10px">${chip(j.Status,M)}</div><button class="tool" style="margin-top:12px" data-c="python offers.py packet ${esc(j.ID)} --task follow-up">Copy follow-up command · ${esc(j.ID)}</button></div>`}).join("");
 
   /* savings: the meter */
   const m=DATA.meter||{}, br=DATA.brain||{answered:0,total:0};
@@ -431,7 +431,7 @@ function render(){
     [N(m.tokens_saved||0),"AI tokens saved","vs pasting the full resume and job description"],
     [N(Math.round((m.minutes_saved||0)/60*10)/10>=1?Math.floor((m.minutes_saved||0)/60):m.minutes_saved||0,(m.minutes_saved||0)>=60?" h":" min"),"time saved","an estimate per job scored, summary built and answer reused"],
     [N(m.jds_scored||0),"jobs scored locally","without using any AI"],
-    [`${N(br.answered)}<span style="color:var(--faint)">/${br.total}</span>`,"common answers ready",br.total-br.answered?`${br.total-br.answered} left: run offeros brain`:"all filled"]
+    [`${N(br.answered)}<span style="color:var(--faint)">/${br.total}</span>`,"common answers ready",br.total-br.answered?`${br.total-br.answered} left: run offers brain`:"all filled"]
   ].map((s,i)=>`<div class="glass stat rv d${i+1}"><b>${s[0]}</b><span style="color:var(--ink)">${s[1]}</span><br><span>${s[2]}</span></div>`).join("");
 
   /* filters from data */
@@ -467,7 +467,7 @@ function render(){
   if(drop&&drop.r>0)T_(`Most of your drop-off happens at <b>${esc(drop.from)} → ${esc(drop.to.replace("+",""))}</b>. Fix that step first.`,"journey","See the funnel");
   if(bestSrc)T_(`<b>${esc(bestSrc[0])}</b> replies most (${pct(bestSrc[1].r,bestSrc[1].n)}%). Spend more of your time there.`,"works","See sources");
   if(inter.length)T_(`${inter.length} role${inter.length>1?"s":""} in interviews. Run interview prep and log every question you get asked.`,"pipeline","See pipeline");
-  if(br.total>br.answered)T_(`${br.total-br.answered} common form answers are still empty. Fill them once with <code>offeros brain</code>.`,"saved","See savings");
+  if(br.total>br.answered)T_(`${br.total-br.answered} common form answers are still empty. Fill them once with <code>offers brain</code>.`,"saved","See savings");
   if(stale.length)T_(`${stale.length} application${stale.length>1?"s have":" has"} been silent for ${ghostAfter}+ days. Mark ${stale.length>1?"them":"it"} Ghosted and move on.`,"status","See status");
   T_(`Search health is <b>${sc}/100</b>. ${sc>=70?"Strong. Keep the rhythm.":"Look at the red checks for quick wins."}`,"status","Check health");
   tipI=0;showTip();
@@ -497,7 +497,7 @@ $("sphere").onclick=()=>{const b=$("bubble");if(b.classList.contains("hide")){b.
 
 function xlCell(j){const TR=DATA.tracker||{},row=TR.rows?.[j.ID];if(!row)return"";
   const label=`Excel ${TR.sheet||"Applications"}!A${row}`;
-  return TR.uri?`<span><a class="xlrow" href="ms-excel:ofe|u|${esc(TR.uri)}" title="Opens the tracker. Go to row ${row} (or run: python offeros.py open ${esc(j.ID)})">▦ ${label}</a></span>`:`<span>▦ ${label}</span>`}
+  return TR.uri?`<span><a class="xlrow" href="ms-excel:ofe|u|${esc(TR.uri)}" title="Opens the tracker. Go to row ${row} (or run: python offers.py open ${esc(j.ID)})">▦ ${label}</a></span>`:`<span>▦ ${label}</span>`}
 const PAGE=12;let shown=PAGE;
 function list(){
   const M=model(),q=$("q").value.toLowerCase(),st=document.querySelector(".pill.on")?.dataset.s||"",sort=$("sort").value;
@@ -545,7 +545,7 @@ if(!STATIC)["rgba(242,167,122,.5)","rgba(226,71,90,.5)","rgba(143,184,255,.4)","
   const s=40+Math.random()*90;Object.assign(o.style,{width:s+"px",height:s+"px",left:Math.random()*90+"vw",top:Math.random()*90+"vh",background:`radial-gradient(circle,${c},transparent 70%)`,animationDelay:-i*4+"s",animationDuration:14+i*4+"s"});document.body.appendChild(o)});
 
 /* ---------- open a tracker straight from Excel (statuses read from its Lists sheet) */
-function loadSheetJS(){return window.XLSX?Promise.resolve():new Promise((ok,no)=>{const s=document.createElement("script");s.src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js";s.onload=ok;s.onerror=()=>no(new Error("Couldn't load the Excel reader. Run `python offeros.py export` instead."));document.head.appendChild(s)})}
+function loadSheetJS(){return window.XLSX?Promise.resolve():new Promise((ok,no)=>{const s=document.createElement("script");s.src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js";s.onload=ok;s.onerror=()=>no(new Error("Couldn't load the Excel reader. Run `python offers.py export` instead."));document.head.appendChild(s)})}
 async function readFile(f){
   try{
     if(/\.json$/i.test(f.name))DATA=JSON.parse(await f.text());

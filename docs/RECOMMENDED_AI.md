@@ -6,7 +6,7 @@ Offers OSS does the bookkeeping locally, so the AI only writes. Any capable mode
 |---|---|---|---|
 | Tailoring, cover notes, recruiter messages | **Claude** (Sonnet/Opus) | Follows "facts only" rules closely; natural, non-salesy tone | Claude free tier |
 | Agentic daily run in the repo | **Claude Code** - reads `CLAUDE.md` + `skills/` | Runs the CLI, follows skills, asks before acting | Gemini CLI (reads `GEMINI.md`) |
-| Filling forms on a page you opened | **Claude in Chrome**, Gemini in Chrome, ChatGPT agent | Sees the page; `offeros-browser-assist` keeps you on Submit | - |
+| Filling forms on a page you opened | **Claude in Chrome**, Gemini in Chrome, ChatGPT agent | Sees the page; `offers-browser-assist` keeps you on Submit | - |
 | Long JDs, many at once, research on a company | **Gemini** (long context) | Cheap bulk reading | Gemini free tier |
 | Interview mock (voice) | **ChatGPT** voice / Gemini Live / Claude voice | Real-time spoken practice | Free tiers |
 | Maximum privacy / offline | **Ollama** + Llama / Qwen / Mistral | Nothing leaves your machine | Free |
@@ -22,6 +22,6 @@ Offers OSS does the bookkeeping locally, so the AI only writes. Any capable mode
 | Follow-ups, stats, dashboard | ~5k | **0** |
 | **Total** | **~125k** | **~5-8k** |
 
-Numbers are estimates (≈ 4 characters per token); `offeros packet` prints the estimate for each packet.
+Numbers are estimates (≈ 4 characters per token); `offers packet` prints the estimate for each packet.
 
 *Plans and prices change; check each provider's current offer.*

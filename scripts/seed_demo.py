@@ -2,7 +2,7 @@
 """Fill the tracker with realistic demo data so you can try Offers OSS in 10 seconds.
 
     python scripts/seed_demo.py            # adds ~24 fictional jobs across all stages
-    python offeros.py export               # then open dashboard/index.html
+    python offers.py export               # then open dashboard/index.html
 
 Companies are fictional. Delete tracker/OffersOSS_Tracker.xlsx and re-run `init` to start clean.
 """
@@ -12,7 +12,7 @@ import sys
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
-import offeros as o  # noqa: E402
+import offers as o  # noqa: E402
 
 random.seed(7)
 JDS = {

@@ -1,5 +1,5 @@
 ---
-name: offeros-browser-assist
+name: offers-browser-assist
 description: Help the user fill a job application form in their own browser session (Claude in Chrome, Gemini in Chrome, ChatGPT agent, Copilot) without breaking site rules. Use when the user says "fill this application", "help me apply on this page".
 ---
 # Browser assist - human in the loop, always
@@ -9,9 +9,9 @@ description: Help the user fill a job application form in their own browser sess
 
 Steps
 1. Confirm the job ID in the tracker (add it if missing).
-2. Fill fields from `profile/profile.yaml` and `brain/answers.yaml` (`python offeros.py answer "<field label>"`).
-3. Unknown question -> stop and ask the human; then save with `offeros learn --q --a`.
+2. Fill fields from `profile/profile.yaml` and `brain/answers.yaml` (`python offers.py answer "<field label>"`).
+3. Unknown question -> stop and ask the human; then save with `offers learn --q --a`.
 4. Hand over: "Everything is filled. Please review and click Submit yourself."
-5. After the human confirms, run `python offeros.py status <ID> Applied`.
+5. After the human confirms, run `python offers.py status <ID> Applied`.
 
 On LinkedIn, Indeed and similar sites, third-party automation of activity is prohibited by their terms. Prefer the company career page; on those sites, limit yourself to drafting text the human pastes.

@@ -11,9 +11,9 @@
 ## A. CLI + any AI
 
 ```bash
-git clone https://github.com/<you>/offeros && cd offeros
+git clone https://github.com/<you>/offers-oss && cd offers-oss
 pip install -r requirements.txt
-python offeros.py init          # creates tracker, profile, second brain
+python offers.py init          # creates tracker, profile, second brain
 ```
 
 1. **Fill `profile/profile.yaml`** - skills you can defend, 4-6 one-line facts with numbers, and your resume variants. Put the resume PDFs in `profile/resumes/` (git-ignored).
@@ -22,16 +22,16 @@ python offeros.py init          # creates tracker, profile, second brain
 4. **Daily loop**
 
 ```bash
-python offeros.py import jobs/inbox.csv   # score + dedupe, 0 tokens
-python offeros.py triage                  # best fit first
-python offeros.py packet OF-0007          # paste into Claude / ChatGPT / Gemini
+python offers.py import jobs/inbox.csv   # score + dedupe, 0 tokens
+python offers.py triage                  # best fit first
+python offers.py packet OF-0007          # paste into Claude / ChatGPT / Gemini
 #   ...apply on the site yourself (or with a browser assistant that stops before Submit)...
-python offeros.py status OF-0007 Applied --note "java resume + cover note"
-python offeros.py due                     # follow-ups
-python offeros.py export                  # open dashboard/index.html
+python offers.py status OF-0007 Applied --note "java resume + cover note"
+python offers.py due                     # follow-ups
+python offers.py export                  # open dashboard/index.html
 ```
 
-Try it first with demo data: `python scripts/seed_demo.py && python offeros.py export`.
+Try it first with demo data: `python scripts/seed_demo.py && python offers.py export`.
 
 ## B. No-code (Excel + any AI chat)
 
@@ -42,18 +42,18 @@ Try it first with demo data: `python scripts/seed_demo.py && python offeros.py e
 
 ## C. Agentic (Claude Code, Gemini CLI, Codex, Cursor, Copilot)
 
-Open the repo in your agent. It auto-reads `CLAUDE.md` / `GEMINI.md` / `AGENTS.md` / `.github/copilot-instructions.md`, which all point to the same rules. Claude Code also picks up `skills/` through `.claude/skills`.
+Open the repo in your agent. It auto-reads `CLAUDE.md` / `GEMINI.md` / `AGENTS.md` / `.github/copilot-instructions.md`, which all point to the same rules. `CLAUDE.md` points Claude Code at the playbooks in `skills/`.
 
-Say: **"start my daily run"** - the `offeros-daily-run` skill does the rest and stops for your approval before anything is sent.
+Say: **"start my daily run"** - the `offers-daily-run` skill does the rest and stops for your approval before anything is sent.
 
 ### Browser assistants (Claude in Chrome, Gemini in Chrome, ChatGPT agent)
-Use the `offeros-browser-assist` skill. The assistant may read the page you opened and fill fields from your profile and saved answers. **You click Submit.** Prefer company career pages; on LinkedIn/Indeed, draft text only (see [COMPLIANCE.md](COMPLIANCE.md)).
+Use the `offers-browser-assist` skill. The assistant may read the page you opened and fill fields from your profile and saved answers. **You click Submit.** Prefer company career pages; on LinkedIn/Indeed, draft text only (see [COMPLIANCE.md](COMPLIANCE.md)).
 
 ## Troubleshooting
 | Symptom | Fix |
 |---|---|
 | `Missing dependencies` | `pip install -r requirements.txt` |
-| Dashboard empty | Run `python offeros.py export`, or drag the `.xlsx` onto the page |
+| Dashboard empty | Run `python offers.py export`, or drag the `.xlsx` onto the page |
 | Fit % looks wrong | Add aliases to skills in `profile.yaml`, e.g. `spring boot\|springboot` |
 | Dashboard sheet shows 0s in a previewer | Open in Excel/Sheets - formulas compute on open |
-| `answer` says "not in brain" | Save it once: `python offeros.py learn --q "..." --a "..."` |
+| `answer` says "not in brain" | Save it once: `python offers.py learn --q "..." --a "..."` |

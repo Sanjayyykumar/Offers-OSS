@@ -13,9 +13,11 @@
 [![Compliant](https://img.shields.io/badge/ToS-human--in--the--loop-fbbf24)](docs/COMPLIANCE.md)
 [![License: MIT](https://img.shields.io/badge/license-MIT-e8ebf2)](LICENSE)
 
-<img src="screenshots/00-dashboard-hero.png" alt="Offers OSS dashboard: today's goal ring, streak, tokens saved, next best actions, KPIs, funnel, source performance" width="100%">
+<img src="screenshots/demo.gif" alt="Offers OSS dashboard: scrolling through the story, from today's goal to complete status, with the AI sphere assistant" width="100%">
 
-<sub>Real dashboard with demo data. Name blurred with the built-in <b>Privacy blur</b> button.</sub>
+**[▶ Live demo](https://<you>.github.io/offers-oss/)** · fictional data, no install
+
+<sub>Real dashboard with demo data. Name blurred with the built-in <b>Blur name</b> button.</sub>
 
 </div>
 
@@ -54,9 +56,9 @@ It covers the whole path from "I found a job" to "I got the offer":
 ## 🔗 Excel ⇄ Dashboard: one source of truth
 
 ```
-offeros add / import / status / learn ──writes──▶  tracker/OffersOSS_Tracker.xlsx  ◀── you can edit it by hand too
+offers add / import / status / learn ──writes──▶  tracker/OffersOSS_Tracker.xlsx  ◀── you can edit it by hand too
                                                         │
-                              offeros export  (or drag the .xlsx onto the page)
+                              offers export  (or drag the .xlsx onto the page)
                                                         ▼
                                               dashboard/index.html ──"Open in Excel" + "Applications!A7" on every job──┐
                                                         ▲                                                              │
@@ -64,20 +66,24 @@ offeros add / import / status / learn ──writes──▶  tracker/OffersOSS_T
 ```
 
 - **Excel layout:** `Dashboard` (live formulas) · `Applications` (16 columns, drop-downs, colour rules) · `Lists` (statuses and sources the dashboard reads) · `Guide`.
-- `python offeros.py open OF-0007` opens the tracker and tells you the row.
+- `python offers.py open OF-0007` opens the tracker and tells you the row.
 - Excel links work when you open the dashboard from your own computer. Browsers block local-file links on hosted pages.
 
 ## ⚡ 60-second quick start
 
 ```bash
-git clone https://github.com/<you>/offeros && cd offeros
-pip install -r requirements.txt
-python offeros.py setup        # 6 questions -> profile, tracker, second brain ready
-python offeros.py brain        # answer common job-site questions once (Enter = skip)
-python offeros.py go           # your daily cockpit
+git clone https://github.com/<you>/offers-oss && cd offers-oss
+pip install -e .              # gives you the `offers` command (or: pip install -r requirements.txt)
+offers setup                  # 6 questions -> profile, tracker, second brain ready
+offers brain                  # answer common job-site questions once (Enter = skip)
+offers go                     # your daily cockpit
 ```
 
-Just want to look around? `python scripts/seed_demo.py && python offeros.py export`, then open `dashboard/index.html`.
+**No terminal?** On Windows, double-click **`offers.bat`**. It installs what's needed, runs setup the first time, then opens the cockpit. On Mac/Linux, run `./offers.sh`.
+
+Every `python offers.py <command>` in these docs also works as `offers <command>` after `pip install -e .`. To keep your data in another folder, set `OFFERS_HOME=/path/to/folder`.
+
+Just want to look around? `python scripts/seed_demo.py && python offers.py export`, then open `dashboard/index.html`.
 
 Don't code? Use the **[no-code path](docs/SETUP.md#b-no-code-excel--any-ai-chat)**: the Excel template plus `AGENTS.md` pasted into any AI chat.
 
@@ -145,12 +151,12 @@ Don't code? Use the **[no-code path](docs/SETUP.md#b-no-code-excel--any-ai-chat)
 
 ```mermaid
 flowchart LR
-    A[You find a job<br/>and paste the JD] --> B[offeros import<br/>local fit score · dedupe<br/>resume variant pick]
+    A[You find a job<br/>and paste the JD] --> B[offers import<br/>local fit score · dedupe<br/>resume variant pick]
     B --> C{triage<br/>instincts: min fit,<br/>daily cap}
-    C -->|top jobs| D[offeros packet<br/>~450 tokens]
+    C -->|top jobs| D[offers packet<br/>~450 tokens]
     D --> E[Any AI<br/>Claude · ChatGPT · Gemini<br/>Copilot · Ollama]
     E --> F[You review<br/>& click Submit]
-    F --> G[offeros status Applied<br/>auto follow-up date]
+    F --> G[offers status Applied<br/>auto follow-up date]
     G --> H[(Excel tracker)]
     H --> I[Live dashboard]
     J[(Second brain<br/>answers · learnings)] --> D
@@ -174,11 +180,11 @@ flowchart LR
 | **Second brain** | `answer` (fuzzy match, 0 tokens), `brain` (fill unanswered questions one by one), `learn` (save answers, interview questions, rejection reasons). |
 | **Instincts** | `brain/instincts.yaml`: min fit, daily cap, follow-up cadence, ghosting rule, and 10 senior-recruiter rules every AI must obey. |
 | **Skills** | 6 portable `SKILL.md` playbooks: daily run, triage, tailor, browser assist, second brain, interview prep. |
-| **Tracker** | `OffersOSS_Tracker.xlsx`: drop-downs, status colours, red overdue follow-ups, green high-fit, and a formula-driven Dashboard sheet. Print-ready. Every CLI command updates it; `python offeros.py open [ID]` opens it, and the dashboard has an **Open in Excel** button plus an `Applications!A<row>` reference on every job. |
+| **Tracker** | `OffersOSS_Tracker.xlsx`: drop-downs, status colours, red overdue follow-ups, green high-fit, and a formula-driven Dashboard sheet. Print-ready. Every CLI command updates it; `python offers.py open [ID]` opens it, and the dashboard has an **Open in Excel** button plus an `Applications!A<row>` reference on every job. |
 | **Dashboard** | One HTML file: an 8-chapter story, a complete status page with a health score, and an animated AI-sphere assistant that tells you what to check next. Animated counters, goal ring, funnel, source performance, fit spread, kanban, follow-ups, searchable list, copy-command buttons, scroll animations, **privacy blur**. Open it from disk, or drag your `.xlsx` onto it. |
 | **Follow-ups** | Auto-dated on status change (Applied +7d, Viewed +4d, Screening +3d, Interview/Offer +2d). `due` lists them and flags ghosted roles after 21 days. |
 | **Counters** | Tokens saved, minutes saved, JDs scored, answers reused, streak, brain coverage. Shown in `go`, `stats` and the dashboard. |
-| **Any AI** | `AGENTS.md` (universal) + `CLAUDE.md`, `GEMINI.md`, `.github/copilot-instructions.md`, `.claude/skills`. |
+| **Any AI** | `AGENTS.md` (universal) + `CLAUDE.md`, `GEMINI.md`, `.github/copilot-instructions.md`. Claude Code is told in `CLAUDE.md` to use `skills/`. |
 | **Privacy** | Local-first. All personal files are git-ignored. Packets carry no phone, email or address. |
 
 ---
@@ -205,13 +211,13 @@ Full matrix and a token budget: **[docs/RECOMMENDED_AI.md](docs/RECOMMENDED_AI.m
 | Follow-ups, stats, dashboard | ~5,000 | **0** |
 | **Total** | **~125k** | **~5–8k** |
 
-<sub>Estimates at ~4 characters per token. `offeros packet` prints the real number for each packet.</sub>
+<sub>Estimates at ~4 characters per token. `offers packet` prints the real number for each packet.</sub>
 
 ---
 
 ## 🧠 Second brain: the questions job sites will ask you
 
-Run `python offeros.py brain` once. Each answer you give is reused on every form (`offeros answer "<field label>"`, 0 tokens). These are pre-loaded, with hints and traps to avoid:
+Run `python offers.py brain` once. Each answer you give is reused on every form (`offers answer "<field label>"`, 0 tokens). These are pre-loaded, with hints and traps to avoid:
 
 <details open><summary><b>24 suggested questions (Naukri, LinkedIn, Indeed, Instahyre, Workday, Greenhouse, Lever)</b></summary>
 
@@ -232,7 +238,7 @@ Run `python offeros.py brain` once. Each answer you give is reused on every form
 
 </details>
 
-New question on a form? Answer it once, then `python offeros.py learn --q "<question>" --a "<answer>"`. After every interview: `offeros learn --kind interview --job OF-0007 --feedback "asked X, Y"`. Your future prep packs use it.
+New question on a form? Answer it once, then `python offers.py learn --q "<question>" --a "<answer>"`. After every interview: `offers learn --kind interview --job OF-0007 --feedback "asked X, Y"`. Your future prep packs use it.
 
 ---
 
@@ -304,19 +310,22 @@ It tailors the top third (headline, summary, top bullets) from facts you wrote. 
 ## 🗂️ Repo map
 
 ```
-offeros.py              one-file CLI (setup, go, add, import, triage, list, packet, status, due, stats, export, open, brain, answer, learn, doctor)
+offers.py               one-file CLI (setup, go, add, import, triage, list, packet, status, due, stats, export, open, brain, answer, learn, doctor)
+offers.bat / offers.sh  double-click launchers (Windows / Mac-Linux)
+pyproject.toml          `pip install -e .` -> `offers` command
 AGENTS.md               rules for ANY AI  (+ CLAUDE.md, GEMINI.md, .github/copilot-instructions.md)
-skills/                 6 portable SKILL.md playbooks (.claude/skills links here)
+skills/                 6 portable SKILL.md playbooks
 brain/                  answers.example.yaml (24 Qs) · instincts.yaml · learnings · companies/
 prompts/                6 packet templates
 profile/                profile.example.yaml · resumes/ (git-ignored)
-brand/                  logo: mark + wordmark (SVG/PNG)
+brand/                  logo (mark + wordmark, SVG/PNG) + social-preview.png
 tracker/                OffersOSS_Tracker.template.xlsx (your live tracker is git-ignored)
 dashboard/              index.html story dashboard + assets/ (background, logo, favicon)
 jobs/                   inbox.example.csv
 scripts/seed_demo.py    demo data
 docs/                   SETUP · COMPLIANCE · RECOMMENDED_AI · WHY_IT_MATTERS
 tests/                  end-to-end tests for every command
+.github/                CI (3 OSes) · live-demo Pages deploy · issue templates · Copilot rules
 ```
 
 ## 🧪 Tests
@@ -327,7 +336,7 @@ pip install pytest && python -m pytest -q     # 10 passed
 CI runs on Linux, macOS and Windows with Python 3.10 and 3.12.
 
 ## 🛣️ Roadmap
-- [ ] `offeros weekly`: Sunday review that turns learnings into new instincts
+- [ ] `offers weekly`: Sunday review that turns learnings into new instincts
 - [ ] Google Sheets sync (optional, OAuth, opt-in)
 - [ ] Per-skill gap report → learning plan
 - [ ] Packs for non-IT fields (design, finance, healthcare)

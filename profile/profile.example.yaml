@@ -1,6 +1,6 @@
 # Offers OSS profile - the ONLY place your facts live.
 # Every AI prompt is built from these lines, so keep them short, true and specific.
-# Copy to profile.yaml (done by `offeros init`). profile.yaml is git-ignored.
+# Copy to profile.yaml (done by `offers init`). profile.yaml is git-ignored.
 
 display_name: "Your Name"          # shown on the dashboard
 headline: "Java Full Stack Engineer | Spring Boot, Microservices, Kafka | 3 yrs | Immediate joiner"

@@ -1,0 +1,12 @@
+name: Bug report
+description: Something in Offers OSS doesn't work
+labels: [bug]
+body:
+  - type: input
+    attributes: { label: Command you ran, placeholder: "python offers.py import jobs/inbox.csv" }
+    validations: { required: true }
+  - type: textarea
+    attributes: { label: What happened, description: Paste the output. Remove personal data first. }
+    validations: { required: true }
+  - type: input
+    attributes: { label: OS and Python version, placeholder: "Windows 11, Python 3.12" }

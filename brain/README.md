@@ -5,9 +5,9 @@ That is the single biggest token saver in Offers OSS: the AI never re-derives yo
 
 | File | What it holds | Who writes it |
 |---|---|---|
-| `answers.yaml` | Your approved answers to the questions recruiters and forms ask again and again | You (via `offeros learn --q --a`) |
+| `answers.yaml` | Your approved answers to the questions recruiters and forms ask again and again | You (via `offers learn --q --a`) |
 | `instincts.yaml` | Decision rules the agent must follow (min fit, daily cap, when to follow up, when to walk away) | You, tuned over time |
-| `learnings.md` | Dated feedback: interview questions you got, rejection reasons, what worked | `offeros learn --feedback` |
+| `learnings.md` | Dated feedback: interview questions you got, rejection reasons, what worked | `offers learn --feedback` |
 | `companies/*.md` | One note per company: people, process, salary band heard, red flags | You or the AI (with your OK) |
 
 **Rules**

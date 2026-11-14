@@ -16,5 +16,5 @@ rules:
   - Tailor the top third of the resume only (headline, summary, top bullets). Do not rewrite the whole resume.
   - Same company, many roles -> apply to the best 1-2, not all.
   - Log every action in the tracker the same day. If it is not in the tracker, it did not happen.
-  - After every interview, log questions asked with `offeros learn --kind interview`.
+  - After every interview, log questions asked with `offers learn --kind interview`.
   - Repeated rejection reason (3x) -> fix the profile or resume before applying further.

@@ -1,0 +1,21 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "offers-oss"
+version = "1.0.0"
+description = "Compliant, AI-agnostic job-hunt system: local fit scoring, token-lean AI packets, Excel tracker and a story dashboard. By Idharyn Labs."
+readme = "README.md"
+license = { text = "MIT" }
+requires-python = ">=3.10"
+authors = [{ name = "Idharyn Labs" }]
+keywords = ["job-search", "career", "ai-agents", "claude", "chatgpt", "gemini", "excel", "resume"]
+dependencies = ["openpyxl>=3.1", "PyYAML>=6.0"]
+classifiers = ["Programming Language :: Python :: 3", "License :: OSI Approved :: MIT License", "Operating System :: OS Independent"]
+
+[project.scripts]
+offers = "offers:main"
+
+[tool.setuptools]
+py-modules = ["offers"]

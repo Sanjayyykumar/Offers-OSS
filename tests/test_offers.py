@@ -6,7 +6,7 @@ from pathlib import Path
 import openpyxl
 import pytest
 
-import offeros as o
+import offers as o
 
 REPO = Path(o.__file__).resolve().parent
 

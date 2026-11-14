@@ -1,4 +1,4 @@
-# Saved answers to common questions. `offeros answer "<question>"` finds the closest one (0 tokens).
+# Saved answers to common questions. `offers answer "<question>"` finds the closest one (0 tokens).
 # Replace <...> placeholders with YOUR truth. Keep each answer under 60 words.
 - id: A01
   q: "What is your notice period?"
@@ -54,10 +54,10 @@
 - id: A10
   q: "Why do you want to join our company?"
   also: [why us, why this company, what do you know about us]
-  a: "<One specific thing about their product> + <one thing about the role that matches your strongest fact>. (Generate per company with `offeros packet <ID> --task screening-answers`.)"
+  a: "<One specific thing about their product> + <one thing about the role that matches your strongest fact>. (Generate per company with `offers packet <ID> --task screening-answers`.)"
   updated: '2026-11-14'
 # ---- Questions job-site application forms ask most (Naukri, LinkedIn, Indeed, Instahyre, Workday, Greenhouse, Lever)
-# Anything still containing <...> counts as UNANSWERED. Run `python offeros.py brain` to fill them one by one.
+# Anything still containing <...> counts as UNANSWERED. Run `python offers.py brain` to fill them one by one.
 - id: A11
   q: "How many years of experience do you have with <skill>?"
   also: [years of work experience with, how many years of experience using, experience in years]
@@ -118,7 +118,7 @@
 - id: A22
   q: "Why should we hire you? Summarise your fit in 2-3 lines"
   also: [why should we hire you, cover letter, summary, additional information, anything else]
-  a: "<Generate per job: python offeros.py packet ID --task cover-note>"
+  a: "<Generate per job: python offers.py packet ID --task cover-note>"
   updated: '2026-11-14'
 - id: A23
   q: "Are you open to contract, C2H or full-time roles?"
