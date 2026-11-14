@@ -11,7 +11,7 @@
 ## A. CLI + any AI
 
 ```bash
-git clone https://github.com/<you>/offers-oss && cd offers-oss
+git clone https://github.com/Sanjayyykumar/Offers-OSS && cd Offers-OSS
 pip install -r requirements.txt
 python offers.py init          # creates tracker, profile, second brain
 ```

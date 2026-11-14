@@ -15,7 +15,7 @@
 
 <img src="screenshots/demo.gif" alt="Offers OSS dashboard: scrolling through the story, from today's goal to complete status, with the AI sphere assistant" width="100%">
 
-**[▶ Live demo](https://<you>.github.io/offers-oss/)** · fictional data, no install
+**[▶ Live demo](https://sanjayyykumar.github.io/Offers-OSS/)** · fictional data, no install
 
 <sub>Real dashboard with demo data. Name blurred with the built-in <b>Blur name</b> button.</sub>
 
@@ -72,7 +72,7 @@ offers add / import / status / learn ──writes──▶  tracker/OffersOSS_Tr
 ## ⚡ 60-second quick start
 
 ```bash
-git clone https://github.com/<you>/offers-oss && cd offers-oss
+git clone https://github.com/Sanjayyykumar/Offers-OSS && cd Offers-OSS
 pip install -e .              # gives you the `offers` command (or: pip install -r requirements.txt)
 offers setup                  # 6 questions -> profile, tracker, second brain ready
 offers brain                  # answer common job-site questions once (Enter = skip)
